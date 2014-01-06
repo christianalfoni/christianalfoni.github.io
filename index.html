@@ -4,10 +4,9 @@ title: christianalfoni
 ---
 
 <div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
+  <div class="posts">
     {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+      <div class="post"><span class="post-date">{{ post.date | date_to_string }}</span> <span class="post-type">{{ post.tags | array_to_sentence_string }}</span> <div class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></div></div>
     {% endfor %}
-  </ul>
+  </div>
 </div>
