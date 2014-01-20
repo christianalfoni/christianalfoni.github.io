@@ -180,18 +180,80 @@ ul,ol {
 
 .footer {
     position: absolute;
+    padding: 2em;
     left: 0;
     bottom: 0;
     width: 100%;
+    text-align: left;
+    background: #262626;
     margin-top: 20px;
+    box-sizing: border-box;
     height: 180px;
-    background-color: #9c9c9c;
 }
 
 
+.github {
+    float: right;
+}
+
+.github .img {
+    width: 7em;
+    height: 7em;
+    background-image: url('/assets/img/github.png');
+    background-size: cover;
+    border-radius: 0.7em;
+    float: right;
+}
+
+.github .details {
+    margin-right: 1em;
+    float: right;
+    color: #BABABA;
+}
+
+.github .details .name {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.github .details div:not(:first-child) {
+    font-size: 1.5em;
+}
+
+.profile {
+
+}
+
+.profile .img {
+    float: left;
+    width: 7em;
+    height: 7em;
+    background-image: url('/assets/img/me.jpg');
+    background-size: cover;
+    border-radius: 0.7em;
+}
+
+.profile .details {
+    margin-left: 1em;
+    float: left;
+    color: #BABABA;
+}
+.profile .details div:not(:first-child) {
+    float: left;
+}
+
+.profile .details div:last-child {
+    margin-left: 1em;
+}
+
+.profile .details .name {
+    font-size: 2em;
+    font-weight: bold;
+}
+
 @media (max-width: 1200px) { /* Should scale down at 1024px */
     body {
-        font-size: 80%;
+        font-size: 90%;
     }
 
     .content {
@@ -217,7 +279,7 @@ ul,ol {
 
 @media (max-width: 640px) {
     body {
-        font-size: 50%;
+        font-size: 60%;
     }
 
     .header {
