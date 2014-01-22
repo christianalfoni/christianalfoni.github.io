@@ -118,12 +118,12 @@ body {
 }
 
 .post {
-    font-size: 1.4em;
+    font-size: 1.2em;
     line-height: 1.4em;
+    font-family: Helvetica, arial, freesans, clean, sans-serif;
 }
 
 .post-type {
-    font-family: Helvetica Neue, Arial;
     text-shadow: 0 1px 0 #FFF;
     color: #ce2727;
     font-weight: bold;
@@ -131,7 +131,6 @@ body {
 }
 
 .post-date, .meta {
-    font-family: Helvetica Neue, Arial;
     text-shadow: 0 1px 0 #FFF;
     color: #9c9c9c;
 }
@@ -169,12 +168,13 @@ h2 {
 }
 
 ul,ol {
-    font-size: 0.8em;
+    font-size: 1em;
     line-height: 1.4em;
 }
 
 .highlight  {
-    line-height: 1em;
+    font-size: 1.2em;
+    line-height: 1.2em;
     font-family: Consolas !important;
 }
 
@@ -221,7 +221,7 @@ ul,ol {
 }
 
 .profile {
-
+    float: left;
 }
 
 .profile .img {
@@ -279,7 +279,7 @@ ul,ol {
 
 @media (max-width: 640px) {
     body {
-        font-size: 60%;
+        font-size: 70%;
     }
 
     .header {
@@ -290,12 +290,64 @@ ul,ol {
     .quote {
         left: 70px;
         margin-top: 50px;
-        max-width: 350px;
+        max-width: 200px;
+        font-size: 1em;
+    }
+
+    .highlight  {
+        font-size: 0.8em;
+        line-height: 1.2em;
     }
 
     .posts .post {
-        width: 300px;
-        height: 33px;
+        float: none;
+        width: auto;
+        height: auto;
+    }
+
+    .post {
+        line-height: 1.6em;
+    }
+
+    .profile {
+        float: none;
+
+    }
+
+    .profile .img {
+        width: 5em;
+        height: 5em;
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .profile .details {
+        margin: 0 0 0 1em;
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .github {
+        margin-top: 2em;
+        float: none;
+        clear: both;
+    }
+
+    .github .img {
+        width: 5em;
+        height: 5em;
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .github .details {
+        margin: 0 0 0 1em;
+        display: inline-block;
+        float: none;
+        vertical-align: top;
     }
 
 }
