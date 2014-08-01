@@ -333,6 +333,7 @@ ul,ol {
         margin-top: 2em;
         float: none;
         clear: both;
+      width: 500;
     }
 
     .github .img {
@@ -348,6 +349,7 @@ ul,ol {
         display: inline-block;
         float: none;
         vertical-align: top;
+      background-color: red;
     }
 
 }
