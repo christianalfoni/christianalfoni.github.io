@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Why javascript inheritance is so difficult to understand"
-date:   2014-07-30 09:21:30
+date:   2014-08-01 09:21:30
 categories: javascript
 tags: ["javascript"]
 ---
