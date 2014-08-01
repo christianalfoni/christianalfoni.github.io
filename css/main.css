@@ -218,6 +218,8 @@ ul,ol {
 
 .github .details div:not(:first-child) {
     font-size: 1.5em;
+    float: left;
+  padding-right: 15px;
 }
 
 .profile {
