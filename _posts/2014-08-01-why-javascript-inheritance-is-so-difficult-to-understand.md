@@ -60,8 +60,8 @@ Okay, as we can see here, everything that is created has a **constructor** prope
 
 So an instantiated object is linked to its **constructor** and that constructors **prototype**. To summarize, we are working on three levels:
 
-1. Prototype: An instance of an object that the object instantiated by the constructor will inherit from
-2. Constructor: Instantiates and decorates a brand new object with unique property values, and connects the prototype to it
+1. Prototype: An instance of an object defined by a prototype constructor
+2. Constructor: Creates an instance of an object and decorates it with unique property values. Then it connects the prototype object to it
 3. Instantiated object: Inherits properties from the prototype and gets unique properties from the constructor
 
 I think we need to look at an example:
@@ -107,10 +107,10 @@ As we can see here, creating new instances gives the same object, though the pro
 We instantiated an Object object on the prototype of our constructor and gave it a list property with an array. This is what happened:
 
 1. Prototype: An instance of Object that contains a property named "list" that has an array as its value
-2. Constructor: Instantiates a MyConstructor object and connects the prototype on the constructor of MyConstructor to the object
-3. Instantiated object: Inherits the list property value from its constructor prototype
+2. Constructor: Instantiates a MyConstructor object and connects the prototype object to the new instantiated object
+3. Instantiated object: Inherits the list property value from the MyConstructor prototype object
 
-Now that we have gotten a look at prototype and inheritance we can check the statement: "All objects in JavaScript inherits from Object". Lets take a look some native constructors:
+Now that we have gotten a look at prototype and inheritance we can check the statement: "All objects in JavaScript inherits from an instance of Object". Lets take a look some native constructors:
 
 {% highlight javascript %}
   var array = [];
@@ -127,7 +127,7 @@ Now that we have gotten a look at prototype and inheritance we can check the sta
   
 {% endhighlight %}
 
-As we can see everything inherits from an instance of an Object. You might ask the question, why does an instance of an Array inherit from an instance of an Array? Actually it is not. The instance of an Array is inhereting from an instance of an ArrayPrototype. The Array constructor is not the constructor that created the array on the prototype. It is actually the ArrayPrototype constructor that has created a complete array, with all its methods etc. The "new Array()" is just a constructor that decorates a new Array object and attaches the "complete array" to it as its prototype. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
+As we can see everything inherits from an instance of an Object. You might ask the question, why does an instance of an Array inherit from an instance of an Array? Or an instance of a Function from an instance of a Function? Actually it is not. F.ex. the instance of an Array is inhereting from an instance of an ArrayPrototype. The Array constructor is not the constructor that created the array on the prototype. The ArrayPrototype constructor is what actually defines a complete array, with all its methods etc. The Array constructor is just a constructor that decorates a new Array object and attaches the instance of the ArrayPrototype object to it. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
 
 {% highlight javascript %}
 
