@@ -10,7 +10,7 @@ tags: ["javascript"]
 You have probably heard the term "prototypal inheritance", "constructor function", "prototype" and that JavaScript does not really have classes. I am going to try to give it my best to explain these concepts and end this article by showing a tiny library that not only helps you structure your code, but also makes sure that the objects that you produce, reflects the way JavaScript does it natively for its own objects. If you have deep understanding of JavaScript my explanation might be overkill, but I hope you take the time to look through and check out the small lib at the end.
 
 ### The concept
-Now, as you have probably heard, "everything in JavaScript is an object". That basically being true, and also being quite easy to comprehend, we could also say: "All objects in JavaScript inherits from Object". Though not being that easy to comprehend, it has more truthyness to it and it says more about how JavaScript works. But what is this Object, and what is inheritance? Lets check out Object first:
+Now, as you have probably heard, "everything in JavaScript is an object". That basically being true, and also being quite easy to comprehend, we could also say: "All objects in JavaScript inherits from an instance of Object". Though not being that easy to comprehend, it has more truthyness to it and it says more about how JavaScript works. But what is this Object, and what is inheritance? Lets check out Object first:
 
 {% highlight javascript %}
   console.log(Object); // => function Object() { [native code] } 
@@ -37,7 +37,7 @@ Putting these side by side, we get something like this:
   new Function() // => function anonymous () {}
 {% endhighlight %}
 
-As you can see, calling a **constructor** with the **new** keyword creates a result. Now, lets investigate these results, see if they leave some trace of where they came from.
+As you can see, calling a **constructor** with the **new** keyword creates a result, an object. Now, lets investigate these objects, see if they leave some trace of where they came from.
 
 {% highlight javascript %}
   var array = new Array();
@@ -60,8 +60,8 @@ Okay, as we can see here, everything that is created has a **constructor** prope
 
 So an instantiated object is linked to its **constructor** and that constructors **prototype**. To summarize, we are working on three levels:
 
-1. Prototype: An instance of an object that the instantiated object will inherit from
-2. Constructor: Decorates the object instantiated with unique property values
+1. Prototype: An instance of an object that the object instantiated by the constructor will inherit from
+2. Constructor: Instantiates and decorates a brand new object with unique property values, and connects the prototype to it
 3. Instantiated object: Inherits properties from the prototype and gets unique properties from the constructor
 
 I think we need to look at an example:
@@ -77,7 +77,6 @@ I think we need to look at an example:
 Now let us first start off by creating a unique property for each instance. As we see on the list above, that is a job for the constructor.
 
 {% highlight javascript %}
-  // We create our own constructor
   function MyConstructor () { 
     this.list = [];
   }
@@ -86,15 +85,15 @@ Now let us first start off by creating a unique property for each instance. As w
   myConstr1.list === myConstr2.list // => false
 {% endhighlight %}
 
-As we can see here, creating new instances gives the same result, though the property values are unique. Let us see what happens if we put this property on the prototype instead:
+As we can see here, creating new instances gives the same object, though the property values are unique. Let us see what happens if we put this property on the prototype instead:
 
 {% highlight javascript %}
-  // We create our own constructor
   function MyConstructor () { 
  
   }
   
-  // Using new Object() to Illustrate that we are actually instantiating a new object
+  // Using new Object() to Illustrate that we are actually instantiating a new object,
+  // {} is just a "shortcut"
   MyConstructor.prototype = new Object({ 
     list: []
   });
@@ -105,13 +104,13 @@ As we can see here, creating new instances gives the same result, though the pro
   myConstr1.__proto__ // => Object { list: [] }
 {% endhighlight %}
 
-We instantiated an Object on the prototype of our constructor and gave it a list property with an array. This is what happened:
+We instantiated an Object object on the prototype of our constructor and gave it a list property with an array. This is what happened:
 
-1. Prototype: Is an instance of Object that contains a property named "list" that has an array as its value
-2. Constructor: Creates a new instance of MyConstructor and connects its prototype to it
+1. Prototype: An instance of Object that contains a property named "list" that has an array as its value
+2. Constructor: Instantiates a MyConstructor object and connects the prototype on the constructor of MyConstructor to the object
 3. Instantiated object: Inherits the list property value from its constructor prototype
 
-Now that we understand prototype and inheritance we can check the statement: "All objects in JavaScript inherits from Object". Lets take a look some native constructors:
+Now that we have gotten a look at prototype and inheritance we can check the statement: "All objects in JavaScript inherits from Object". Lets take a look some native constructors:
 
 {% highlight javascript %}
   var array = [];
@@ -128,7 +127,7 @@ Now that we understand prototype and inheritance we can check the statement: "Al
   
 {% endhighlight %}
 
-As we can see everything inherits from Object. You might ask the question, why does an instance of an array inherit from an instance of an array? Think of the constructor you used to create your Array (new Array(), or []) and the constructor that created the prototype Array, as two different constructors. It is actually the prototype constructor that has created a complete array, with all its methods etc. The "new Array()" is just a constructor that decorates a new Array object and attaches the "complete array" to it as its prototype. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
+As we can see everything inherits from an instance of an Object. You might ask the question, why does an instance of an Array inherit from an instance of an Array? Actually it is not. The instance of an Array is inhereting from an instance of an ArrayPrototype. The Array constructor is not the constructor that created the array on the prototype. It is actually the ArrayPrototype constructor that has created a complete array, with all its methods etc. The "new Array()" is just a constructor that decorates a new Array object and attaches the "complete array" to it as its prototype. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
 
 {% highlight javascript %}
 
@@ -138,7 +137,7 @@ Array.prototype instanceof Array // => false
 
 {% endhighlight %}
 
-As you can see, the prototype instance is not from the same constructor as the array instance you create. But lets put this in the back of our heads for a few minutes, lets move on to how you would probably handle it.
+As you can see, the prototype instance is not from the same constructor as the array instance you create. But lets put this in the back of our heads for a few minutes, lets move on to a common pattern:
 
 {% highlight javascript %}
   function Parent () { 
@@ -159,21 +158,23 @@ As you can see, the prototype instance is not from the same constructor as the a
   child1.__proto__ // => Parent { sharedList: true }
   child1.__proto__.sharedList === child2.__proto__.sharedList // => true
   
-  child1.constructor // => Object {}
+  child1.constructor // => Object {} ... wut?
 {% endhighlight %}
 
 Okay, step by step, what happens here:
 
-1. We define a Parent constructor that will on instantating create a unique "sharedList"" property with an array for the object created
+1. We define a Parent constructor that will on instantiating create a unique "sharedList"" property with an array for the object created
 2. We define an instance of an Object as its prototype (empty object)
+
 3. We define a Child constructor that will on instantiating create a unique "ownList" property with an array for the object created
 4. We define an instance of a Parent as its prototype
+
 5. We instantiate two Child objects
 
-As we see each child will get their own "ownList", but they point to the same instantiated Parent object on their prototype. This is inheritance in a nutshell!
+As we see each child will get their own "ownList", but they point to the same instantiated Parent object on their prototype. Now this works...
 
 ### But is this right?
-If we would do this the JavaScript native objects way, the prototype of **Child** should not be an instance of **Parent**, the prototype of **Child** should be an instance of a **Child Prototype** where the prototype of **Parent** is connected. Like this:
+If we would do this the JavaScript native objects way, the prototype of **Child** should not be an instance of **Parent**, the prototype of **Child** should be an instance of a **Child Prototype** where the prototype of **Parent**, an instance of **ParentPrototype**, is connected. Like this:
 
 {% highlight javascript %}
 /*
@@ -191,12 +192,12 @@ If we would do this the JavaScript native objects way, the prototype of **Child*
 Not only is the chain wrong, we also have the wrong constructor property. As you see in the previous code example it is pointing to Object, not **Child** as it should.
 
 ### Resolving the confusion
-The way JavaScript natively inherits is probably not how you would do things, but after looking deeper into this it is actually quite interesting:
+The way JavaScript inherits on its native objects is kinda weird at first, but after looking deeper into this it is actually quite interesting:
 
 {% highlight javascript %}
   var MyArray = (function () {
     var Constr = function MyArray () {};
-    var Proto = function MyArray () {
+    var Proto = function MyArrayPrototype () {
       Object.defineProperty(this, 'constructor', {
         enumerable: false,
         configurable: false,
@@ -213,7 +214,7 @@ The way JavaScript natively inherits is probably not how you would do things, bu
   MyArray.constructor instanceof Function // => true
   Array.constructor instanceof Function // => true
   
-  new MyArray().__proto__ // => MyArray { push: function () {} }
+  new MyArray().__proto__ // => MyArrayPrototype { push: function () {} }
   new Array().__proto__ // => []
   
   new MyArray() instanceof MyArray // => true
@@ -228,9 +229,9 @@ The way JavaScript natively inherits is probably not how you would do things, bu
 
 So basically, after my research and understanding, defining a new object the native way requires two constructors. One constructor which is just a handler for instantiating, and one constructor to instantiate a prototype. So the conclusion here is that we have two types of inheritance:
 
-1. You define two constructors, an "instantiation constructor" and a "prototype constructor". An instantiated prototype is set as the prototype of the "instantiation constructor". This means that the prototype of your instantiated object is actually a **prototype of that object**... without any manipulation from the "instantiation constructor"
+1. You define two constructors, an "instantiation constructor" and a "prototype constructor". The "instantiation constructor" has a prototype property where an instance of the "prototype constructor" is located. This means that the prototype of your instantiated object by defenition is a **prototype**. The prototype is "all that object is" and your instantiated object is the bare minimum, everything else is inherited from the prototype. 
 
-2. You define a single constructor with a prototype that holds the methods for your constructor. This is a very typical pattern, though it breaks with the way JavaScript does it natively
+2. You define a single constructor with a prototype that holds the methods for your constructor. This is a very typical pattern, though it breaks with the way JavaScript does it natively because here the constructor that instantiates new objects and the prototype is "all that object is". Natively only the prototype should be "all that object is" and the constructor is just there to produce the "bare minimum" object that inherits from its prototype
 
 Doing a lot of testing and research to write this article it has actually occured to me that it makes perfect sense that the prototype of your object is the complete object with all methods and default values... like, actually a prototype of it... not just an object-container for methods you want to share across instances. The actual job of a constructor is to instantiate a new object, manipulate its properties and attach the prototype. Not splitting the definition of your object across a constructor and a plain prototype object, like this:
 
@@ -248,7 +249,7 @@ Doing a lot of testing and research to write this article it has actually occure
    
 {% endhighlight %}
 
-Actually, To me it seems that this is doing it in reverse. We should first define our prototype with a constructor and build a complete object with methods and other properties. Then we create an instantiation constructor for that prototype and set that constructors prototype to be an instance of the prototype defined.
+The native way we should first define our prototype with a constructor and build a complete object with methods and other properties. Then we create an instantiation constructor for that prototype and set that constructors prototype to be an instance of the prototype constructor defined.
 
 A code example:
 
@@ -261,7 +262,7 @@ A code example:
       this.name = options.name || this.name;
     };
   
-    var Prototype = function MyObject () {
+    var Prototype = function MyObjectPrototype () {
       var somePrivateMethod = function () {};
       this.constructor = Constructor;
       this.name = 'Unknown';
@@ -279,7 +280,7 @@ A code example:
    
 {% endhighlight %}
 
-I dont know about you, but these makes total sense to me, but of course it gives some extra code. Maybe we could do it a bit simpler?
+I dont know about you, but this kinda makes total sense to me, but of course it gives some extra code. Maybe we could do it a bit simpler?
 
 ### Making it look a bit nicer
 There are many libraries out there and they tackle these issues differently, including me :-) This is the syntax of my small lib to make prototype and inheritance easier to do in JavaScript.
@@ -299,7 +300,7 @@ There are many libraries out there and they tackle these issues differently, inc
   
 {% endhighlight %}
 
-What you are doing here is actually building the prototype constructor for "MyBase". Since there is no constructor passed for instantiation you will get an empty one. So lets see what happens if we add that:
+What you are doing here is actually building the prototype constructor for "MyBase". Since there is no constructor passed for instantiation you will get an empty one. So lets see what happens if we add our own constructor:
 
 {% highlight javascript %}
 
@@ -318,7 +319,7 @@ What you are doing here is actually building the prototype constructor for "MyBa
   
 {% endhighlight %}
 
-Passing in two functions tells Protos that the first one is your instantiation constructor and the second one is your prototype constructor. So how would we handle inheritance? Well, if you just want to create a base prototype that will never get instantiated, only inherited, just pass in one function and build it:
+Passing in two functions tells Protos that the first one is your instantiation constructor and the second one is your prototype constructor. So how would we handle deeper inheritance? Well, if you just want to create a base prototype that will never get instantiated, only inherited, just pass in one function and build it:
 
 {% highlight javascript %}
 
@@ -390,9 +391,27 @@ This does not make sense because at its core a prototype is a single instance ob
 
 {% endhighlight %}
 
-It is of course a different story as you do not want to manipulate the existing prototype. Now, again, the problem here is that by debugging you will not know that you are chained with SomeOther... only some object. 
+It is of course a different story as you do not want to manipulate the existing prototype. Now, again, the problem here is that by debugging you will not know that you are chained with SomeOther... only some object: 
 
-Last, but not least, you will always need a constructor. There is not a more effective way to produce objects that own other complex objects, than using a constructor.
+{% highlight javascript %}
+
+  function SomeOther () {}
+  SomeOther.prototype = { test: 'test' };
+  function MyConstr () {}
+  MyConstr.prototype = Object.create(SomeOther.prototype);
+  MyConstr.prototype.newProp = 'newProp';
+  
+  new MyConstr();
+  /*
+    MyConstr {}
+      newProp: 'newProp'
+      __proto__ - Object
+        test: 'test'
+  */
+
+{% endhighlight %}
+
+Last, but not least, you will always need a constructor. There is not a more effective way to produce multiple instances of the same type of object that own other complex objects, than using a constructor.
 
 ### Conclusion
-Okay, this was probably a lot to take in. Hopefully I managed to make you more aware of how JavaScript works and pointed out that concepts are very loosely defined and extremely flexible. This is kind of a good thing, but it makes it very hard to comprehend certain parts of the language. Thanks for reading!
+Okay, this was probably a lot to take in. Hopefully I managed to point out some interesting things about how JavaScript works and that the concepts are very loosely defined and extremely flexible. This is kind of a good thing, but it makes it very hard to comprehend certain parts of the language. Thanks for reading!
