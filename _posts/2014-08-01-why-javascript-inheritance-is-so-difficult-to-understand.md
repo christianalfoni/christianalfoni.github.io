@@ -58,7 +58,7 @@ Okay, as we can see here, all objects has a **constructor** property that points
 3. {}.constructor === Object
 4. {}.\_\_proto\_\_ === Object.prototype
 
-So an instantiated object is linked to its **constructor** and that constructors **prototype**. To summarize, we are working on three levels:
+So the object created knows about its **constructor**. The object created is also linked to a **prototype**, which the **constructor** supplied. To summarize, we are working on three levels:
 
 1. Prototype: An instance of an object defined by a prototype constructor
 2. Constructor: Creates an instance of an object and decorates it with unique property values. Then it connects the prototype object to it
