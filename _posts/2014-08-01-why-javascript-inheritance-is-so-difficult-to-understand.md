@@ -10,7 +10,7 @@ tags: ["javascript"]
 You have probably heard the term "prototypal inheritance", "constructor function", "prototype" and that JavaScript does not really have classes. I am going to try to give it my best to explain these concepts and end this article by showing a tiny library that not only helps you structure your code, but also makes sure that the objects that you produce, reflects the way JavaScript does it natively for its own objects. If you have deep understanding of JavaScript my explanation might be overkill, but I hope you take the time to look through and check out the small lib at the end.
 
 ### The concept
-Now, as you have probably heard, "everything in JavaScript is an object". That basically being true, and also being quite easy to comprehend, we could also say: "All objects in JavaScript inherits from an instance of Object". Though not being that easy to comprehend, it has more truthyness to it and it says more about how JavaScript works. But what is this Object, and what is inheritance? Lets check out Object first:
+Now, as you have probably heard, "everything in JavaScript is an object". That basically being true, and also being quite easy to comprehend, we could also say: "All objects in JavaScript inherits from an instance of Object prototype". Though not being that easy to comprehend, it has more truthyness to it and it says more about how JavaScript works. But first of all, what is this Object, what is inheritance and what is prototype? Lets check out Object first:
 
 {% highlight javascript %}
   console.log(Object); // => function Object() { [native code] } 
@@ -110,24 +110,27 @@ We instantiated an Object object on the prototype of our constructor and gave it
 2. Constructor: Instantiates a MyConstructor object and connects the prototype object to the new instantiated object
 3. Instantiated object: Inherits the list property value from the MyConstructor prototype object
 
-Now that we have gotten a look at prototype and inheritance we can check the statement: "All objects in JavaScript inherits from an instance of Object". Lets take a look some native constructors:
+Now that we have gotten a look at prototype and inheritance we can check the statement: "All objects in JavaScript inherits from an instance of Object prototype". Lets take a look some native constructors:
 
 {% highlight javascript %}
   var array = [];
-  array.__proto__ // => Instance of an Array
+  array.__proto__ // => Instance of an Array prototype
   array.__proto__.__proto__ // => Object {}
+  array.__proto__.__proto__ === Object.prototype // => true
 
   var function = function () {};
-  function.__proto__ // => Instance of a Function
+  function.__proto__ // => Instance of a Function prototype
   function.__proto__.__proto__ // => Object {}
+  function.__proto__.__proto__ === Object.prototype // => true
   
   var string = "test string";
-  function.__proto__ // => Instance of a String
-  function.__proto__.__proto__ // => Object {}
+  string.__proto__ // => Instance of a String prototype
+  string.__proto__.__proto__ // => Object {}
+  string.__proto__.__proto__ === Object.prototype // => true
   
 {% endhighlight %}
 
-As we can see everything inherits from an instance of an Object. You might ask the question, why does an instance of an Array inherit from an instance of an Array? Or an instance of a Function from an instance of a Function? Actually it is not. F.ex. the instance of an Array is inhereting from an instance of an ArrayPrototype, not an other instance of an Array. The Array constructor is not the constructor that created the array on the prototype. The ArrayPrototype constructor is what actually defines a complete array, with all its methods etc. The Array constructor is just a constructor that decorates a new Array object and attaches the instance of the ArrayPrototype object to it. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
+As we can see everything inherits from an instance of an Object prototype. You might ask the question, what is the difference between an instance of an Array and an instance of an Array prototype? Or an instance of a Function and an instance of Function prototype? Well, f.ex. the instance of an Array is inhereting from an instance of an Array prototype, not an other instance of an Array. The Array constructor is not the constructor that created the array on the prototype. The Array prototype constructor is what actually defines a complete array, with all its methods etc. The Array constructor is just a constructor that decorates a new Array object and attaches the instance of the Array prototype object to it. Actually, if your application only needed one array, you could have used Array.prototype everywhere in your app :-)
 
 {% highlight javascript %}
 
