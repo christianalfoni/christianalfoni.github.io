@@ -4,8 +4,15 @@ html {
     min-height: 100%;
 }
 
+html, html a {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
+
 body {
     margin: 0 0 200px;
+    font-family: 'Inconsolata';
     font-size: 100%;
     height: 100%;
     color: #333;
@@ -24,8 +31,6 @@ body {
 
 .site {
     display: none;
-    font-family: 'Alegreya Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
     min-height: 100%;
     text-align: center;
 }
@@ -119,9 +124,9 @@ body {
 }
 
 .post {
-    font-size: 1.2em;
-    line-height: 1.4em;
-    font-family: Helvetica, arial, freesans, clean, sans-serif;
+    font-size: 1.1em;
+    line-height: 1.8em;
+    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
 
 .post-type {
@@ -149,7 +154,7 @@ body {
 a {
     color: #2781ce;
     text-decoration: none;
-    font-size: 0.75em;
+    font-size: 1em;
 }
 
 a:hover {
@@ -161,6 +166,10 @@ a:hover {
     font-size: 1.25em;
 }
 
+h1, h2, h3, h4 {
+  color: #9a1616;
+}
+
 h2 {
     font-weight: normal;
     font-size: 3em;
@@ -170,7 +179,7 @@ h2 {
 
 ul,ol {
     font-size: 1em;
-    line-height: 1.4em;
+    line-height: 1.6em;
 }
 
 .highlight  {
@@ -314,7 +323,7 @@ ul,ol {
 
     .profile {
         float: none;
-
+      display: block;
     }
 
     .profile .img {
@@ -335,8 +344,7 @@ ul,ol {
     .github {
         margin-top: 2em;
         float: none;
-        clear: both;
-      width: 500;
+      display: block;
     }
 
     .github .img {
@@ -352,7 +360,6 @@ ul,ol {
         display: inline-block;
         float: none;
         vertical-align: top;
-      background-color: red;
     }
 
 }
