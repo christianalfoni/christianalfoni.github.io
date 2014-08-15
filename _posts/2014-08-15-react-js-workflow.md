@@ -51,7 +51,7 @@ So this is how my **gulpfile.js** file looks like:
 
 {% highlight javascript %}
 var gulp = require('gulp');
-var source = require('vinyl-source-stream'); // Used to stream bundle for further concatination etc.
+var source = require('vinyl-source-stream'); // Used to stream bundle for further handling etc.
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify'); 
@@ -72,6 +72,7 @@ gulp.task('browserify', function() {
 		console.log('Updating!');
 		watcher.bundle() // Create new bundle that uses the cache for high performance
 		.pipe(source('main.js'))
+    // This is where you add uglifying etc.
 		.pipe(gulp.dest('./build/'));
 		console.log('Updated!', (Date.now() - updateStart) + 'ms');
 	})
