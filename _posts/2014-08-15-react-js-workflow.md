@@ -51,7 +51,7 @@ So this is how my **gulpfile.js** file looks like:
 
 {% highlight javascript %}
 var gulp = require('gulp');
-var source = require('vinyl-source-stream'); // Used to stream bundle for further handling etc.
+var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify'); 
@@ -122,6 +122,6 @@ var App = require('./App.jsx');
 React.renderComponent(<App/>, document.body);
 {% endhighlight %}
 
-So that was my journey. I truly hope that the people at Facebook will put an example of this on the React JS site. React JS is truly awesome and its very sad that people leave it out because it is such a pain setting up a good workflow. 
+So that was my journey. I truly hope that the people at Facebook will put an example of this on the React JS site. React JS is truly awesome and its very sad if people leave it out because it is such a pain setting up a good workflow. 
 
 Thanks for listening to my story and have fun with [React JS]('http://facebook.github.io/react')!
