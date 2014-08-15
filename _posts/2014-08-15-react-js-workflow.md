@@ -115,9 +115,6 @@ var React = require('react');
 // DEV-TOOLS does not display
 window.React = React; 
 
-var router = require('./router.js');
-var externals = require('./utils/externals.js');
-
 var App = require('./App.jsx');
 React.renderComponent(<App/>, document.body);
 {% endhighlight %}
