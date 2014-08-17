@@ -119,6 +119,6 @@ var App = require('./App.jsx');
 React.renderComponent(<App/>, document.body);
 {% endhighlight %}
 
-So that was my journey. I truly hope that the people at Facebook will put an example of this on the React JS site. React JS is truly awesome and its very sad if people leave it out because it is such a pain setting up a good workflow. 
+So that was my journey. I truly hope that the people at Facebook will put an example of this on the React JS site. React JS is truly awesome and its very sad if people leave it out because it is such a pain setting up a good workflow. Until then feel free to use an application boilerplate I have set up which also handles testing: [react-app-boilerplate](https://github.com/christianalfoni/react-app-boilerplate).
 
 Thanks for listening to my story and have fun with [React JS]('http://facebook.github.io/react')!
