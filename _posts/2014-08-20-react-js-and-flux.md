@@ -176,6 +176,6 @@ module.exports = FLUX.createComponent({
   }
 });
 {% endhighlight %}
-Wow, that was a lot more code! Well, you actually have to think of this as a boilerplate for your app. It takes more code to get going, but when you are on your way it will be a lot easier for you to control how your application operates. If you need a new store, just add it and make compoenents dependant of it. If you need more views, create a component and use it inside any other component without affecting any parent controller or models.
+Wow, that was a lot more code! Well, try to think of it like this. In the above examples, if we were to do any changes to the application we would probably have to move things around. In the FLUX example we have considered that from the start. Any changes to the application is adding, not moving things around. If you need a new store, just add it and make components dependant of it. If you need more views, create a component and use it inside any other component without affecting their current "parent controller or models".
 
 React JS and FLUX is still very new and I still need to try this out on a large application, but the concepts make sense. Hopefully this will help you get going with React JS and its FLUX architecture. Thanks for hearing me out!

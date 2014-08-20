@@ -6,12 +6,12 @@ categories: javascript
 tags: ["javascript"]
 ---
 
-I have been working with **React JS** for a few days and I must say I am impressed. You can not really compare it to complete frameworks like **Angular JS** or **Ember JS**, but at the same time it is worth mentioning in the same context. A full framework helps you develop very fast and is a dream when it comes to prototyping, but building a high performance web application is easier when you control each part. More on that in a later post, lets dive into how I found an ideal way to work with React JS.
+I have been working with **React JS** for a few days and I must say I am impressed. You can not really compare it to complete frameworks like **Angular JS** or **Ember JS**, but at the same time it is worth mentioning in the same context. A full framework increases your development speed and is a dream when it comes to prototyping, but building a high performance web application is easier when you control each part. More on that in a later post, lets dive into how I found an ideal way to work with React JS.
 
 ### The problem
 I really do not appreciate the simplicity of examples shown on probably all library/framework sites. Nobody builds an application in the global scope, nobody builds an application in a single file and everybody wants to make their code production ready. The **React JS** site is no different and it took me quite some time creating a good workflow. This is what I needed:
 
-- Write JSX and transform it to regular javascript on the fly
+- Write JSX (The React JS javascript format) and transform it to regular javascript on the fly
 - Write my code in a module pattern
 - Use the React JS chrome dev tool
 - Bundle my javascript and use source maps for debugging
@@ -24,7 +24,7 @@ This post will go through each step I did to find a solution. If you just want t
 So my first challenge was to solve the JSX transformation on the fly. Looking at the [React JS guide](http://facebook.github.io/react/docs/getting-started.html) I quickly figured out that the only thing I needed was to include an extra script tag in my HTML. It solves my problem, but it is not what I am looking for. The extra script tag is not something you want to put in production, so I would need to pre-transform my files containing JSX. 
 
 ### Second try
-As the **React JS guide** states, you can install the **react-tools** globally and use a command line tool to watch files and convert them. It solves my problem, but it transforms each individual file and puts it in a different folder. This will create a messy project structure. At this point I thought maybe I was focusing on the wrong problem, I decided to look at some module pattern tools, maybe they have some plugins to convert the JSX for me.
+As the **React JS guide** states, you can install the **react-tools** globally and use a command line tool to watch files and convert them. It solves my problem, but it transforms each individual file and puts it in a different folder. This will create a messy project structure. I needed to change my strategy! I decided to look at some module tools instead, they would have to support the transformation of JSX anyways.
 
 ### Third try
 Having quite a bit of experience with **requirejs** I thought that would be a good bet, but it became more complex than I initially thought. A great job has been done on this plugin: [jsx-requirejs-plugin]('https://github.com/philix/jsx-requirejs-plugin'), but you get extra dependenices like the "text" plugin for requirejs and you have to use a modified version of the "JSXTransformer", that does not feel good. There was also an issue with bundling the whole project on each file change, it was too slow.
