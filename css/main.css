@@ -166,8 +166,35 @@ a:hover {
     font-size: 1.25em;
 }
 
-h1, h2, h3, h4 {
+pre {
+  margin: 1em;
+}
+
+code {
+  background-color: #EAEAEA;
+  border-radius: 3px;
+}
+
+.highlight {
+  margin-top: 1em;
+}
+
+h1, h2, h3 {
   color: #9a1616;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin: 1em 0 0 0;
+}
+
+h4 {
+  color: #333;
+  font-size: 1.2em;
 }
 
 h2 {
