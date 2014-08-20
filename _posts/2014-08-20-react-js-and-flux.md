@@ -17,7 +17,7 @@ I was working on a huge project, building a switchboard application on the web. 
 
 A long story short, the implementation basically translated those events into DOM operations. Each event type had some logic trying to figure out the correct DOM operation. Now, this might not seem like such a bad idea, but just the call interface itself had like 20-30 states. Everything from alerting call, hanging up, idle, transferring, hold, call 1 hold and call 2 active etc. This got totally out of control. There was a lot of bugs.
 
-At a later point I got the opportunity to re-implement this solution. By that time Backbone was popular and we gave it a try. Instead of passing single events from the backend, we changed the architecture to pass the complete state of the calls. Those calls were translated to models in a collection and then passed to the view. Every time the collection of calls changed, interface was completely rerendered. No more bugs.
+At a later point I got the opportunity to re-implement this solution. By that time Backbone was popular and we gave it a try. Instead of passing single events from the backend, we changed the architecture to pass the complete state of the calls. Those calls were translated to models in a collection and then passed to the view. Every time the collection of calls changed, the interface was completely rerendered. No more bugs.
 
 There are two points to this story:
 
@@ -26,15 +26,24 @@ There are two points to this story:
 2. The concept of rerender is a very good thing, it makes it a lot easier to handle application logic. That said, it has some problems, but maybe there is a way to get the best of both worlds
 
 ### Backbone
+**main.js**
+{% highlight javascript %}
+var UserModel = require('./UserModel.js');
+var CheckboxView = Require('./CheckboxView.js');
+new CheckboxView({model: new UserModel()}).render().$el.appendTo('body');
+{% endhighlight %}
+**UserModel.js**
 {% highlight javascript %}
 var model = Backbone.Model.extend({
   notify: false
 });
+{% endhighlight %}
+**CheckboxView.js**
+{% highlight javascript %}
 var View = Backbone.View.extend({
   events: {
     'click input': 'updateUser',
     template: handlebars.compile('<input type="checkbox" {#if notify}checked{/if}/> Notify'),
-    model: model,
     initialize: function () {
       this.listenTo(this.model, 'change', this.render);
     },
@@ -59,7 +68,9 @@ Backbone rerenders the complete view. Yeah, it is a bad thing too. The reason is
 There is also a problem of scaling. Giving the view that much direct control of your model might become a problem. Maybe changing *notify* would affect some other part of the application. You would end up with multiple listeners to the model, each doing something to the state of your application. This could potentially be very hard to manage.
 
 ### In Angular
+**main.js**
 {% highlight javascript %}
+angular.module('myApp', [])
 .factory('UserService', function () {
   var user = {};
   return {
@@ -72,11 +83,13 @@ There is also a problem of scaling. Giving the view that much direct control of 
   $scope.user = UserService.getUser();
 });
 {% endhighlight %}
-
+**index.html**
 {% highlight html %}
-<div ng-controller="MyCtrl">
-  <input type="checkbox" ng-model="user.notify"/>
-</div>
+<body ng-app="myApp">
+  <div ng-controller="MyCtrl">
+    <input type="checkbox" ng-model="user.notify"/>
+  </div>
+</body>
 {% endhighlight %}
 Looking at Angular we instantly see how powerful two way databinding is. We define a service, which could be looked at as our model for the user. This user object is attached to a scope property called user. To reflect the state of the notify property on the checkbox we just have to "bind" it. Whenever the checkbox changes, the notify property changes. It is really quite beautiful. 
 
@@ -110,6 +123,7 @@ There is no official dispatcher and store library for flux, they are just concep
 {% highlight javascript %}
 /** @jsx React.DOM */
 var React = require('flux-react');
+var Checkbox = require('./Checkbox.js');
 React.renderComponent(<Checkbox/>, document.body);
 {% endhighlight %}
 **UserStore.js**
@@ -118,9 +132,6 @@ var React = require('flux-react');
 var user = {
   notify: false
 };
-
-// We return an object that we will pass when
-// building the store
 module.exports = React.createStore({
   getNotify: function () {
     return user.notify;
@@ -147,15 +158,14 @@ module.exports = React.createClass({
 
   // What stores the component is dependant of
   stores: [UserStore], 
-  
   getInitialState: function () {
     return {
       notify: UserStore.getNotify() 
     };
   },
   
-  // A react-flux callback that triggers when an action
-  // is dispatched and the stores have flushed
+  // A react-flux callback that triggers when any
+  // of its dependant stores updates (flushes)
   storesDidUpdate: function () {
     this.setState({
       notify: UserStore.getNotify()
