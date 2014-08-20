@@ -48,10 +48,10 @@ var View = Backbone.View.extend({
   }
 });
 {% endhighlight %}
-In this scenario we pass a model to the view defined. The view has a template that in this case uses handlebars. When the view is initialized it listens for changes on the model. If any changes occur it will rerender its contents. If the user clicks the input the view will run an **updateUser** method that updates the model. When the model is updated the 'change' event is triggered and the view rederenders.
+In this scenario we pass a model to the view defined. The view has a template that in this case uses handlebars. When the view is initialized it listens for changes on the model. If any changes occur it will rerender its contents. If the user clicks the input the view will run an **updateUser** method that updates the model. When the model is updated the 'change' event is triggered and the view rerenders.
 
 #### The good
-Backbone makes it easy to keep your views up to date compared to vanilla javascript. Instead of updating specific elements in the DOM, you just rerender a section of the page related to a model. Any interaction coming back from the view goes straight to the model, updates it and in turn updates the view. Specifically here you do not need to update both the view and the model. The model is the "master".
+Backbone makes it easy to keep your views up to date compared to vanilla javascript. Instead of updating specific elements in the DOM, you just rerender a section of the page related to a model. Any interaction coming back from the view goes straight to the model, updates it and in turn updates the view. Specifically you do not need to update both the view and the model. The model is the "master".
 
 #### The not so good
 Backbone rerenders the complete view. Yeah, it is a bad thing too. The reason is that DOM updates is the slowest part in the browser and it should be at a minimal. The other thing is that a full rerender of the view might break interaction. Maybe the user was typing something in an input etc. 
@@ -81,30 +81,30 @@ There is also a problem of scaling. Giving the view that much direct control of 
 Looking at Angular we instantly see how powerful two way databinding is. We define a service, which could be looked at as our model for the user. This user object is attached to a scope property called user. To reflect the state of the notify property on the checkbox we just have to "bind" it. Whenever the checkbox changes, the notify property changes. It is really quite beautiful. 
 
 #### The good
-Angulars two way databinding substantially reduces the amount of code you need to write. You are very productive and personally I love Angular for prototyping. There is also a very loose concept of a model. A model can be any object with any kind of behaviour. This makes it a lot easier to build different types of models with their own specific behaviour, instead of a general Model concept.
+Angulars two way databinding reduces the amount of code you need to write. You are very productive and personally I love Angular for prototyping. There is also a very loose concept of a model. A model can be any object with any kind of behaviour. This makes it a lot easier to build different types of models with their own specific behaviour, instead of a general Model concept.
 
 #### The not so good
-Even though we write a lot less code we get the same problem as with Backbone, actually it gets worse. In bigger applications multiple components might want to know about changes to a property. Though two way databinding is powerful, there is no handler for setting the property, you instantly mutate your model. You would have to trigger events or manually watch the property to know about changes. That gives the same problem as Backbone, a lot of different parts of your application reacting on specific state changes.
+Even though we write less code we get the same problem as with Backbone, actually it gets worse. In bigger applications multiple components might want to know about changes to a property. Though two way databinding is powerful, there is no handler for setting the property, you instantly mutate your model. You would have to trigger events or manually watch the property to know about changes. That gives the same problem as Backbone, handling different parts of your application reacting on specific state changes.
 
 Angulars two way databinding is based on "dirty checking". There is a whole lot going on in Angulars digest cycle and it is difficult to identify when this digest cycle runs. This can potentially result in slower applications and errors when you need to manually trigger the digest cycle with $apply.
 
 ### FLUX
-Now, FLUX is not a framework, it is an architecture that uses React JS as its "controller - view" layer. The good thing about this architecture, comparing it to MV\*, is that it is a very basic concept that scales endlessly. There are no MVVC, MVC, MVMCMVMCM... yeah, the last one was a pun... I love the Angular team calling it MV-whatever. It does not matter what you call it, what matters is that you have a simple to understand and scalable architecture. The FLUX architecture, to my opinion, beats MV* at that. So lets looks more deeply into that statement. These are the three main concepts that builds up FLUX:
+Now, FLUX is not a framework, it is an architecture that uses React JS as its "controller - view" layer. The good thing about this architecture, comparing it to MV\*, is that it is a very basic concept that scales endlessly. There are no MVVC, MVC, MVMCMVMCM... yeah, the last one was a pun... I love the Angular team calling it MV-whatever. It does not matter what you call it, what matters is that you have a simple to understand and scalable architecture. The FLUX architecture, in my opinion, beats MV* at that. So lets looks more deeply into that statement. These are the three main concepts that builds up FLUX:
 
 * Dispatcher
 * Stores
 * Components
 
-Though these concepts does not translate directly to the examples above, there are some similarities. A model represents what we call a Store in FLUX. What seperates the Store in FLUX from a traditional model though is that it is part of a FLOW. In Backbone and Angular the interface updates are based on the model, and the interface updates right back. That is not the case with FLUX.
+Though these concepts does not translate directly to the examples above, there are some similarities. A model represents what we call a Store in FLUX. What seperates the Store in FLUX from a traditional model though is that it is part of a one way flow. In Backbone and Angular the interface updates are based on the model, and the interface updates right back. That is not the case with FLUX.
 
-In FLUX the interface is not able to update the stores. They can pass an "intent", also called action, to the dispatcher and the dispatcher notifies all the stores about this intent. So the point here is that the stores holds all the application state and when a user interaction, server response etc. wants to change that state they send an "intent" through the dispatcher which notifies all the stores.
+In FLUX the interface is not able to update the stores. They can pass an "intent", also called action, to the dispatcher and the dispatcher notifies all the stores about this intent. So the point here is that the stores holds all the application state and when a user interaction occurs, a server request is responded etc., they are all passed through the dispatcher as an "intent" that notifies all the stores.
 
 When a store has updated their state, a "change" event is emitted which any component can listen to. A component receiving this 'change' event will rerender. This is the same principle as Backbone, BUT there is one huge difference. A component does not rerender all its content, it will only update the parts of the DOM that it needs to. This is done by React JS own virtual DOM and a difference alghoritm that results in DOM operations. It is really quite brilliant.
 
-So the flow is: **DISPATCHER -> STORES -> COMPONENTS**. If a component wants to change state they have to send an intent to the dispatcher. In MVC, you often have: **MODEL <-> CONTROLLER <-> VIEW**, state is changed in both directions. So think of double digits of models, controllers and views, all going in both directions, crossing each other. It gets problematic! In FLUX though, it does not matter how complex your application gets, the flow is the same all over. And that is what makes FLUX easy to work with.
+So the flow is: **DISPATCHER -> STORES -> COMPONENTS**. If a component wants to change state they have to send an intent to the dispatcher. In MVC, you often have: **MODEL <-> CONTROLLER <-> VIEW**, state is changed in both directions. So think of double digits of models, controllers and views, all going in both directions, crossing each other. It gets problematic! In FLUX though, it does not matter how complex your application gets, the flow is the same all over. And that is exactly what makes FLUX easy to work with.
 
 ### Looking at the code
-Now, there is no official dispatcher and store library for flux, they are just concepts. So in this example I will use a FLUX library I built that has its own dispatcher and store concept, extending it on the React library itself. You can get more information that here: [flux-react](https://github.com/christianalfoni/flux-react)
+There is no official dispatcher and store library for flux, they are just concepts. So in this example I will use a FLUX library I built that has its own dispatcher and store concept, extending the React library itself. You can get more information on that here: [flux-react](https://github.com/christianalfoni/flux-react).
 {% highlight javascript %}
 /* ==== main.js ==== */
 /** @jsx React.DOM */
@@ -140,7 +140,7 @@ module.exports = React.createStore({
 /** @jsx React.DOM */
 var React = require('flux-react');
 var UserStore = require('./UserStore.js');
-module.exports = React.createComponent({
+module.exports = React.createClass({
 
   // What stores the component is dependant of
   stores: [UserStore], 
