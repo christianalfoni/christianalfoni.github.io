@@ -105,13 +105,15 @@ So the flow is: **DISPATCHER -> STORES -> COMPONENTS**. If a component wants to 
 
 ### Looking at the code
 There is no official dispatcher and store library for flux, they are just concepts. So in this example I will use a FLUX library I built that has its own dispatcher and store concept, extending the React library itself. You can get more information on that here: [flux-react](https://github.com/christianalfoni/flux-react).
+
+**main.js**
 {% highlight javascript %}
-/* ==== main.js ==== */
 /** @jsx React.DOM */
 var React = require('flux-react');
 React.renderComponent(<Checkbox/>, document.body);
-
-/* ==== UserStore.js ==== */
+{% endhighlight %}
+**UserStore.js**
+{% highlight javascript %}
 var React = require('flux-react');
 var user = {
   notify: false
@@ -135,8 +137,9 @@ module.exports = React.createStore({
     }
   }
 });
-
-/* ==== Checkbox.js ==== */
+{% endhighlight %}
+**Checkbox.js**
+{% highlight javascript %}
 /** @jsx React.DOM */
 var React = require('flux-react');
 var UserStore = require('./UserStore.js');
