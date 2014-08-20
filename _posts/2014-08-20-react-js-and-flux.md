@@ -108,11 +108,11 @@ Now, there is no official dispatcher and store library for flux, they are just c
 {% highlight javascript %}
 /* ==== main.js ==== */
 /** @jsx React.DOM */
-var React = require('react-flux');
+var React = require('flux-react');
 React.renderComponent(<Checkbox/>, document.body);
 
 /* ==== UserStore.js ==== */
-var React = require('react-flux');
+var React = require('flux-react');
 var user = {
   notify: false
 };
@@ -138,7 +138,7 @@ module.exports = React.createStore({
 
 /* ==== Checkbox.js ==== */
 /** @jsx React.DOM */
-var React = require('react-flux');
+var React = require('flux-react');
 var UserStore = require('./UserStore.js');
 module.exports = React.createComponent({
 
