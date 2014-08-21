@@ -35,7 +35,9 @@ new CheckboxView({model: new UserModel()}).render().$el.appendTo('body');
 **UserModel.js**
 {% highlight javascript %}
 var model = Backbone.Model.extend({
-  notify: false
+  defaults: {
+    notify: false
+  }
 });
 {% endhighlight %}
 **CheckboxView.js**
