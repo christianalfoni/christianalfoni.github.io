@@ -278,12 +278,9 @@ ul,ol {
     color: #BABABA;
 }
 .profile .details div:not(:first-child) {
-    float: left;
+    margin: 7.5px 0;
 }
 
-.profile .details div:last-child {
-    margin-left: 1em;
-}
 
 .profile .details .name {
     font-size: 2em;
