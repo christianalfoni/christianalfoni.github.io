@@ -29,7 +29,7 @@ There are two points to this story:
 **main.js**
 {% highlight javascript %}
 var UserModel = require('./UserModel.js');
-var CheckboxView = Require('./CheckboxView.js');
+var CheckboxView = require('./CheckboxView.js');
 new CheckboxView({model: new UserModel()}).render().$el.appendTo('body');
 {% endhighlight %}
 **UserModel.js**
@@ -99,7 +99,7 @@ Looking at Angular we instantly see how powerful two way databinding is. We defi
 Angulars two way databinding reduces the amount of code you need to write. You are very productive and personally I love Angular for prototyping. There is also a very loose concept of a model. A model can be any object with any kind of behaviour. This makes it a lot easier to build different types of models with their own specific behaviour, instead of a general Model concept.
 
 #### The not so good
-Even though we write less code we get the same problem as with Backbone, actually it gets worse. In bigger applications multiple components might want to know about changes to a property. Though two way databinding is powerful, there is no handler for setting the property, you instantly mutate your model. You would have to trigger events or manually watch the property to know about changes. That gives the same problem as Backbone, handling different parts of your application reacting on specific state changes.
+Even though we write less code we get the same problem as with Backbone, actually it gets worse. In bigger applications multiple components might want to know about changes to a property. Though two way databinding is powerful, there is no handler for setting the property, you instantly mutate your model. You would have to trigger events or manually watch the property to know about changes. That gives the same problem as Backbone, different parts of your application may need to react on a specific state change.
 
 Angulars two way databinding is based on "dirty checking". There is a whole lot going on in Angulars digest cycle and it is difficult to identify when this digest cycle runs. This can potentially result in slower applications and errors when you need to manually trigger the digest cycle with $apply.
 
