@@ -7,7 +7,7 @@ tags: ["javascript"]
 ---
 
 I am not going to take up your time explaining FLUX in details, that is already very well done on the [Facebook flux site](http://facebook.github.io/flux/). What I want to tell you about is why you would want to consider the flux architecture with React JS
-as your tool to build an interface and handle interaction and updates to that interface.
+as your tool to build an interface, and handle interaction and updates to that interface.
 
 ### Its all about state
 Just to be sure that we are on the same page, state can be explained as simple as a checkbox. When the checkbox is checked, the state is different than if it is unchecked. What you want to call these states does not matter. Maybe you call it `checked:true` or `state:'on'`, it does not matter, what matters is the way this state is communicated to and from the interface.
@@ -119,7 +119,7 @@ When a store has updated their state, a "change" event is emitted which any comp
 So the flow is: **DISPATCHER -> STORES -> COMPONENTS**. If a component wants to change state they have to send an intent to the dispatcher. In MVC, you often have: **MODEL <-> CONTROLLER <-> VIEW**, state is changed in both directions. So think of double digits of models, controllers and views, all going in both directions, crossing each other. It gets problematic! In FLUX though, it does not matter how complex your application gets, the flow is the same all over. And that is exactly what makes FLUX easy to work with.
 
 ### Looking at the code
-There is no official dispatcher and store library for flux, they are just concepts. So in this example I will use a FLUX library I built that has its own dispatcher and store concept, extending the React library itself. You can get more information on that here: [flux-react](https://github.com/christianalfoni/flux-react).
+In this example I will use a FLUX library I built that has its own dispatcher and store, extending the React library itself. You can get more information on that here: [flux-react](https://github.com/christianalfoni/flux-react).
 
 **main.js**
 {% highlight javascript %}
