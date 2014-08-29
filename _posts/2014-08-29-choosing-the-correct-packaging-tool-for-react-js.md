@@ -10,7 +10,7 @@ When new frameworks are released they rarely have a workflow suggestion included
 
 I have a set up a github project you can take a look at here: [react-packaging](https://github.com/christianalfoni/react-packaging). It has a small setup for each packaging tool mentioned below. The requirements for each project is:
 
-1. <strong>Rebundling speed:</strong> Should rebundle on file change (if needed) in under 200 ms
+1. <strong>Rebundling speed:</strong> Should rebundle on file change (if needed) in under 200 ms. Note that I am not benchmarking the packaging tools. The combination of tools in this post are "first and best" combination below 200 ms
 2. <strong>A good feel for it:</strong> Should not give me any bad feelings
 3. <strong>JSX transform:</strong> Should transform files with JSX content
 4. <strong>Node support:</strong> Should use `renderComponentToString` to render the App component on page load
@@ -68,7 +68,7 @@ grunt.initConfig({
 
 #### Result
 - <strong>Rebundling speed:</strong> Its the fastest one because you do not need to bundle your files
-- <strong>A good feel for it:</strong> It does not feel good to download a modified JSXTransformer file. Using .jsx does not feel good either due to RequireJS a problem using .js
+- <strong>A good feel for it:</strong> It does not feel good to download a modified JSXTransformer file. Using .jsx does not feel good either due to RequireJS having a problem using .js
 - <strong>JSX transform:</strong> RequireJS transforms JSX content on the fly when the file is required. The deployed bundle has the transformed version included
 - <strong>Node support:</strong> You will have to install RequireJS for node and use that specifically for loading the component you want to render to a string
 - <strong>Sourcemapping:</strong> There is no need for sourcemapping as RequireJS does not bundle the files together during development
@@ -157,7 +157,7 @@ Webpack and Browserify have much in common. They both let you write Node syntax 
 2. Set up Grunt to run webpack with your options
 3. Use React and the node-jsx module on your server to require the main component, render it to a string and combine it with the rest of the html result
 
-You can check out the project structure here: [webpack-project](https://github.com/christianalfoni/react-packaging/tree/master/webpack-project) and this the configuration for your development and deployment:
+You can check out the project structure here: [webpack-project](https://github.com/christianalfoni/react-packaging/tree/master/webpack-project) and this is the configuration for your development and deployment:
 
 {% highlight javascript %}
 var webpack = require('webpack');
