@@ -54,6 +54,7 @@ The point of this diagram is to show you how things start to depend on each othe
 Facebooks FLUX architecture aims to solve this problem by creating a unidirectonal flow. You have your states and the only way those states can change is by actions going through a dispatcher, down to your state handlers. These state handlers, called stores in FLUX, will notify your UI layer, called components. It looks something like this:
 
 {% highlight console %}
+ 
     |---------------|     |---------------|     |----------------|
 --> | DISPATCHER    | --> | STORE (state) | --> | COMPONENT (UI) | --
 |   |---------------|     |---------------|     |----------------|  |
@@ -77,6 +78,7 @@ It is not possible for your component to manipulate the state of your applicatio
 In FLUX though, you would solve the problem like this:
 
 {% highlight console %}
+ 
     |---------------|      |---------------|      |----------------|
 --> | DISPATCHER    | ---> | STORE (state) | ---> | COMPONENT (UI) | --
 |   |---------------|      |---------------|  |   |----------------|  |
@@ -93,6 +95,7 @@ As you can see it is a lot easier to reason about what is going on in this diagr
 And this is how FLUX scales. You keep adding stores and components and it does not get more complex, only bigger. And most importantly, stateupdates only flow in one direction.
 
 {% highlight console %}
+ 
     |---------------|      |---------------|      |----------------|
 --> | DISPATCHER    | ---> | STORE (state) | ---> | COMPONENT (UI) | --
 |   |---------------|  |   |---------------|  |   |----------------|  |
@@ -469,6 +472,7 @@ The flow:
 
 As highlighted in bold, this is the flow:
 {% highlight console %}
+ 
     |---------|     |-------|     |-----------|
 --> | ACTIONS | --> | STATE | --> | COMPONENT | --
 |   |---------|     |-------|     |-----------|  |
