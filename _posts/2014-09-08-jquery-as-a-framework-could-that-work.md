@@ -26,6 +26,8 @@ You basically want to control two things in your application. **State** and **UI
 In MVC the state is spread between your domain models which holds the state of your database entities, and the controllers which holds the state of your application. Your controllers mutate the models directly and/or their internal controller state. 
 
 {% highlight console %}
+| mvc |
+
 |---------------|     |-----------------------|     |-----------|
 | MODEL (STATE) | <-> | CONTROLLER (STATE/UI) | <-> | VIEW (UI) |
 |---------------|     |-----------------------|     |-----------|
@@ -34,6 +36,8 @@ In MVC the state is spread between your domain models which holds the state of y
 Looking at this overview it looks very simple, but as your application grows, this is what happens:
 
 {% highlight console %}
+| mvc |
+
 |-------|       |------------|       |------|
 | MODEL | <---> | CONTROLLER | <---> | VIEW |
 |       | <--   |------------|       |------|
@@ -54,7 +58,8 @@ The point of this diagram is to show you how things start to depend on each othe
 Facebooks FLUX architecture aims to solve this problem by creating a unidirectonal flow. You have your states and the only way those states can change is by actions going through a dispatcher, down to your state handlers. These state handlers, called stores in FLUX, will notify your UI layer, called components. It looks something like this:
 
 {% highlight console %}
- 
+| flux |
+
     |---------------|     |---------------|     |----------------|
 --> | DISPATCHER    | --> | STORE (state) | --> | COMPONENT (UI) | --
 |   |---------------|     |---------------|     |----------------|  |
@@ -65,6 +70,8 @@ Facebooks FLUX architecture aims to solve this problem by creating a unidirecton
 It is not possible for your component to manipulate the state of your application directly. That said, you will hold state in your UI too, but that is related only to that specific component. F.ex. "Has all required inputs a value?". `hasAllRequiredInputsValue` is a state that could be used to enable/disable a save button in your component. That is typically only a concern for the component itself. But lets say you do implement an other component that needs to be aware of the `hasAllRequiredInputsValue` state. In MVC this state would probably be defined in a controller and it would be very tempting to create a relationship between the existing controller and your new controller, but that is exactly where things start to go wrong. It would look something like this:
 
 {% highlight console %}
+| mvc |
+
 |------------|       |------|
 | CONTROLLER | <---> | VIEW |
 |------------|       |------|
@@ -78,7 +85,8 @@ It is not possible for your component to manipulate the state of your applicatio
 In FLUX though, you would solve the problem like this:
 
 {% highlight console %}
- 
+| flux |
+
     |---------------|      |---------------|      |----------------|
 --> | DISPATCHER    | ---> | STORE (state) | ---> | COMPONENT (UI) | --
 |   |---------------|      |---------------|  |   |----------------|  |
@@ -95,7 +103,8 @@ As you can see it is a lot easier to reason about what is going on in this diagr
 And this is how FLUX scales. You keep adding stores and components and it does not get more complex, only bigger. And most importantly, stateupdates only flow in one direction.
 
 {% highlight console %}
- 
+| flux |
+
     |---------------|      |---------------|      |----------------|
 --> | DISPATCHER    | ---> | STORE (state) | ---> | COMPONENT (UI) | --
 |   |---------------|  |   |---------------|  |   |----------------|  |
@@ -472,7 +481,8 @@ The flow:
 
 As highlighted in bold, this is the flow:
 {% highlight console %}
- 
+| jFramework |
+
     |---------|     |-------|     |-----------|
 --> | ACTIONS | --> | STATE | --> | COMPONENT | --
 |   |---------|     |-------|     |-----------|  |
