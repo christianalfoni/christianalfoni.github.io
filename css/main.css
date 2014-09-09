@@ -115,15 +115,45 @@ body {
     text-indent: 0.5em;
 }
 
+#home {
+  width: 100%;
+  white-space:nowrap;
+}
+
+.posts {
+  display: inline-block;
+  width: 60%;
+  vertical-align: top;
+}
+
+.projects {
+  display: inline-block;
+  width: 40%;
+  vertical-align: top;
+}
 
 .posts .post {
-    width: 310px;
-    float: left;
     margin: 0.5em;
-    height: 100px;
+}
+
+.project {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #DADADA;
+  margin-bottom: 20px;
+}
+
+.project span {
+  font-weight: bold;
+}
+
+.project p {
+  white-space: normal;
+      font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  line-height: 1.8em;
 }
 
 .post {
+    white-space: normal;
     font-size: 1.1em;
     line-height: 1.8em;
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
@@ -307,10 +337,6 @@ ul,ol {
         max-width: 350px;
     }
 
-    .posts .post {
-        width: 300px;
-        height: 80px;
-    }
 }
 
 @media (max-width: 640px) {
@@ -334,12 +360,11 @@ ul,ol {
         font-size: 0.8em;
         line-height: 1.2em;
     }
-
-    .posts .post {
-        float: none;
-        width: auto;
-        height: auto;
-    }
+  
+  .posts, .projects {
+    width: 100%;
+    display: block;
+  }
 
     .post {
         line-height: 1.6em;

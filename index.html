@@ -5,8 +5,49 @@ title: christianalfoni
 
 <div id="home">
   <div class="posts">
+    <h1>Posts</h1>
     {% for post in site.posts %}
-      <div class="post"><span class="post-date">{{ post.date | date_to_string }}</span> <span class="post-type">{{ post.tags | array_to_sentence_string }}</span> <div class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></div></div>
+    <div class="post"><span class="post-date">{{ post.date | date_to_string }}</span> <span class="post-type">{{ post.tags | array_to_sentence_string }}</span> <div class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></div></div>
     {% endfor %}
+  </div>
+  <div class="projects">
+    <h1>Projects</h1>
+    <div class="project">
+      <span>JSFridge (Alpha)</span>
+      <p>
+        A service that merges the experience of video education with fiddle services. Creating a new way of
+        learning frontend web code in the browser.
+      </p>
+      <a href="http://www.jsfridge.com" target="new">Go to project</a>
+    </div>
+    <div class="project">
+      <span>jFramework</span>
+      <p>
+        A unidirectional framework that gives the functionality of React JS components in a much 
+        simpler syntax, and includes framework concepts like a router and a state handling.
+      </p>
+      <a href="https://github.com/christianalfoni/jframework" target="new">Go to project</a>
+    </div>
+    <div class="project">
+      <span>module-loader-tdd</span>
+      <p>
+        A module loader that lets you expose private methods only during testing.
+      </p>
+      <a href="https://github.com/MarcelloSystems/module-loader-tdd" target="new">Go to project</a>
+    </div>
+    <div class="project">
+      <span>grunt-tdd</span>
+      <p>
+        A test plugin for grunt that lets you test your code with different testrunners, both in the browser and Node. Results appear and refresh instantly in your browser, also Node tests.
+      </p>
+      <a href="https://github.com/christianalfoni/grunt-tdd" target="new">Go to project</a>
+    </div>
+    <div class="project">
+      <span>Backbone drag&drop delegation</span>
+      <p>
+        A plugin to Backbone JS that allows you to handle drag and drop like other delegated events.
+      </p>
+      <a href="https://github.com/christianalfoni/backbone-draganddrop-delegation" target="new">Go to project</a>
+    </div>
   </div>
 </div>
