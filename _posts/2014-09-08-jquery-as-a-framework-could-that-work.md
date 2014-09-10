@@ -10,7 +10,7 @@ We have all come to know and love our JS frameworks. Ember JS, Angular JS, React
 
 What I have realised though is that I never use all the features the framework has to offer, mostly a small percentage of it. There are so many concepts, so many methods, sometimes it does not look like JavaScript and I am still having problems keeping my code sane and scalable. 
 
-It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better?
+It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better? Something you could use in legacy projects and something that feels more of a stepping stone, than a giant leap.
 
 You can take a look at the API documentation and download examples over at the [repo](https://github.com/christianalfoni/jframework), but there will be lots of code examples here, so please read on.
 
@@ -98,7 +98,7 @@ In FLUX though, you would solve the problem like this:
 -----------------------------------------------------------------------
 {% endhighlight %}
 
-As you can see it is a lot easier to reason about what is going on in this diagram. Our `hasAllRequiredInputsValue`-state is moved to a store and in the process making it available to any other current and future components as well.
+As you will see reading on it is a lot easier to reason about what is going on in this diagram. Our `hasAllRequiredInputsValue`-state is moved to a store and in the process making it available to any other current and future components as well.
 
 And this is how FLUX scales. You keep adding stores and components and it does not get more complex, only bigger. And most importantly, stateupdates only flow in one direction.
 
@@ -120,23 +120,23 @@ And this is how FLUX scales. You keep adding stores and components and it does n
 -----------------------------------------------------------------------
 {% endhighlight %}
 
-So FLUX is great and with React JS as your component tool you have a very good setup. My issues with React JS though is the philosphy of rerendering the whole application on state changes, instead of notifying the specific components (UI) that rely on those changes. React JS is also complex. There are many tools, addons and method names to keep track of. It is neither a complete framework like Ember JS and Angular JS, at least not yet. This is not to say React JS is bad, it is awesome! It just does not solve everything I want it to solve.
+So FLUX is great and with React JS as your component tool you have a very good setup. My issues with React JS though is the philosphy of rerendering the whole application on any state changes, instead of notifying the specific components (UI) that rely on those changes. React JS is also complex. There are many tools, addons and method names to keep track of. It is neither a complete framework like Ember JS and Angular JS, at least not yet. This is not to say React JS is bad, it is awesome! It just does not solve everything I need it to solve.
 
 ### jFramework in short
 jFramework takes the principles of FLUX, forcing a unidirectonal flow, but does not have a philosophy of rerendering the whole application on state changes. Only components that depend on certain states will do a smart rerender, removing/adding/replacing DOM content required to keep in sync. Any nested components will only be affected if their parent component passes properties that have changed. jFramework also introduces all the tools needed to build an application, like a router, actions and state stores. It is also focused on being a very restricted and simple API. It should be easy to understand, remember and be productive in. And of course have fun with :-)
 
 #### So you thought jQuery was out?
-React JS uses a string representation of the UI before and after a state change to calculate DOM operations that is required to make the necessary changes to the UI. jFramework does something similar. It builds up its own internal structure of the UI using jQuery and checks differences on an object level, not a string level. The nice thing about jQuery is the amazing amounts of plugins, when put in a composable component concept becomes even more powerful.
+React JS uses a string representation of the UI before and after a state change to calculate DOM operations that is required to make the necessary changes to the UI. jFramework does something similar. It builds up its own internal structure of the UI using jQuery objects and checks differences on an object level, not a string level. The nice thing about jQuery is the amazing amounts of plugins and when put in a composable component concept becomes even more powerful.
 
 I think it is time to check some code. All the examples below are shown in the CommonJS pattern so that you can see how the code is written with modules. You are free to use it globally though, just make sure you load jQuery first.
 
 ### Components
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
-    this.render(function () {
-        return template(
+    this.render = function (compile) {
+        return compile(
             '<h1>',
                 'Hello world!',
             '</h1>'
@@ -145,147 +145,170 @@ module.exports = $$.component(function (template) {
     
 });
 {% endhighlight %}
-This code defines a render-callback that runs whenever the component needs to render. The render-callback needs to return a template. A template can be created by using the one argument passed to the component itself. The function takes unlimited arguments that builds up and returns a DOM structure. This syntax makes it very easy to write HTML in javascript and it gives some key advantages. Lets have a look at these advantages to get a better understanding of our first example.
+This code defines a render-callback that runs whenever the component needs to render. The render-callback needs to return some compiled DOM representation. The on arugment passed to the render method does just that. The function takes unlimited arguments that builds up and returns a DOM representation. This syntax makes it very easy to write HTML in javascript and it gives some key advantages. Lets have a look at these advantages to get a better understanding of our first example.
 
 #### Scope in components
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   var myStaticValue = 'foo';
   
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<h1>',
         myStaticValue,
       '</h1>'
     );
-  });
+  };
 });
 {% endhighlight %}
-In this example we have a string value of `foo`, but it could have been a number or an array of templates. String and number values will be converted to a text node.
+In this example we have a string value of `foo`, but it could have been a number or an array of compiled representations. String and number values will be converted to a text node.
 #### Passing properties to a component
 {% highlight javascript %}
 /* MyComponent.js */
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<h1>',
         this.props.title,
       '</h1>'
     );
-  });
+  };
   
 });
 
 /* main.js */
-var $ = require('jquery');
 var $$ = require('jframework');
-$(function () {
-  $$.render(MyComponent({title: 'Hello world!'}), 'body');
-});
+$$.render(MyComponent({title: 'Hello world!'}), 'body');
 {% endhighlight %}
 You can pass properties to an object and use them with `this.props` in the scope of the component.
 #### Composing components
 {% highlight javascript %}
 /* Title.js */
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<small>',
         this.props.title,
       '</small>'
     );
-  });
+  };
   
 });
 
 /* MyComponent.js */
 var $$ = require('jframework');
 var Title = require('./Title.js');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<h1>',
         Title({title: 'Wazup?'}),
       '</h1>'
     );
-  });
+  };
   
 });
 {% endhighlight %}
 You can use a component inside an other component. If the title value passed by `MyComponent` would change, `Title` would rerender itself with the updated value.
+#### Using attributes
+Inspired by Angular JS it is possible to add attributes to your DOM representation with property values of your component. Lets have a look:
+
+{% highlight javascript %}
+var $$ = require('jframework');
+module.exports = $$.component(function () {
+ 
+  this.render = function (compile) {
+    this.listClass = {
+      active: $$.path() === '/'
+    };   
+    return compile(
+      '<ul $$-class="listClass">',
+        items,
+      '</ul>'
+    );
+    
+  };
+  
+});
+{% endhighlight %}
+In this example we define a `listClass` object that defines class names as keys and the values indicate if they should be added as a class or not. The `active` class name will be added to our `ul` element if the current path is `/`. You can use property values from your component in your DOM representation using $$-attributeName. 
+
 #### Create lists
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
-
-  this.render(function () {
+module.exports = $$.component(function () {
   
-    var items = ['foo', 'bar'].map(function (title) {
-      return template(
-        '<li>',
-          title,
+  var list = [{id: '1', title: 'foo'}, {id: '2', title: 'bar'}];
+  
+  this.render = function () {
+  
+    var items = this.map(list, function (compile) {
+      return compile(
+        '<li $$-id="id">',
+          this.title,
         '</li>'
       );
     });
     
-    return template(
+    return compile(
       '<ul>',
         items,
       '</ul>'
     );
     
-  });
+  };
   
 });
 {% endhighlight %}
-In the render callback you can create an array of templates. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFramework to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item.
+In the render callback you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFramework to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
 
-**Pro tip** Templates returned in a list could be components. Be sure to pass an ID property to keep track of the components in the list, `Item({id: 'foo'})`.
+**Pro tip** The compiled DOM representation could include components. Be sure to pass an ID property to keep track of the components in the list, `Item({id: this.id})`.
 #### Listening to UI events
+A design decision in jFramework is to "manifest" as much as possible. Like actions manifest the state changes your application can do, `listenTo` does the same to components, and also state objects. Instead of reading through your DOM representation to figure out what interaction can be done, you have your list of listeners.
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   this.log = function () {
     console.log('I was clicked!');
   };
 
   this.listenTo('click', this.log);
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<button>',
         'Click me!',
       '</button>'
     );
-  });
+  };
 });
 {% endhighlight %}
-You can listen to UI events with normal jQuery code, using `listenTo`. The callback passed will be bound to the component context, again making `this` point to the component. In this case the top node was the button to listen for. If the button was further down in the template tree you would do this:
+You can listen to UI events with normal jQuery code, using `listenTo`. The callback passed will be bound to the component context, making `this` point to the component. In this case the top node was the button to listen for. If the button was further down in the template tree you would do this:
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   this.log = function () {
     console.log('I was clicked!');
   };
 
   this.listenTo('click', 'button', this.log);
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<div>',
         '<button>',
           'Click me!',
         '</button>',
       '</div>'
     );
-  });
+  };
 });
 {% endhighlight %}
 As you can see you use jQuery delegated events. You can use any jQuery selector to handle UI events in your template.
@@ -294,33 +317,35 @@ There are lots of jQuery plugins available and you can use them with jFramework.
 {% highlight javascript %}
 $('#myDiv').somePlugin();
 {% endhighlight %}
+
 In jFramework you use a `plugin` method to achieve the same thing:
+
 {% highlight javascript %}
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   this.plugin('somePlugin');
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<div></div>'
     );
-  });
+  };
 
 });
 {% endhighlight %}
 
 In this example the plugin is activated on the top node of the template. If you want to activate a plugin in a nested element, you would do this:
 {% highlight javascript %}
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   this.plugin('somePlugin', 'button');
-  this.render(function () {
-    return template(
+  this.render = function (compile) {
+    return compile(
       '<div>',
         '<button>My plugin button</button>',
       '</div>'
     );
-  });
+  };
 
 });
 {% endhighlight %}
@@ -337,22 +362,22 @@ So f.ex. a dropdown from the Bootstrap library could become a configurable compo
 {% highlight javascript %}
 /* BootstrapDropdown.js */
 var $$ = require('jframework');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   this.plugin('dropdown');
-  this.render(function () {
+  this.render = function (compile) {
   
-    var items = this.props.items.map(function (item) {
-        return template(
+    var items = this.map(this.props.items, function (compile) {
+        return compile(
           '<li role="presentation">',
             '<a role="menuitem" tabindex="-1" href="#">', 
-              item,
+              this,
             '</a>',
           '</li>'
         );
     });
     
-    return template(
+    return compile(
       '<div class="dropdown">',
         '<a data-toggle="dropdown" href="#">',
           this.props.title,
@@ -363,18 +388,17 @@ module.exports = $$.component(function (template) {
       '</div>'
     );
     
-  });
+  };
   
 });
 
 /* main.js */
-var $ = require('jquery');
 var BootstrapDropdown = require('./BootstrapDropdown.js');
-$(function () {
-  $$.render(BootstrapDropdown({title: 'MyDropDown', items: ['foo', 'bar']}), 'body');
-});
+$$.render(BootstrapDropdown({title: 'MyDropDown', items: ['foo', 'bar']}), 'body');
 {% endhighlight %}
-Now you are starting to see how powerful these components are becoming. Any jQuery plugin available can be used. Just pass the name of the plugin, an optional selector if the element is nested in the template and an optional options object that will be passed to the plugin.
+
+Now you are starting to see how powerful these components are becoming. Any jQuery plugin available can be used. Just pass the name of the plugin, an optional selector if the element is nested in the DOM representation and an optional options object that will be passed to the plugin.
+
 ### Actions
 To update any state in your application you will need an action. Actions can be defined as easily as:
 {% highlight javascript %}
@@ -406,29 +430,29 @@ A state in jFramework can listen to actions, change their internal state and not
 {% highlight javascript %}
 var $$ = require('jframework');
 var actions = require('actions');
-module.exports = $$.state(function (flush) {
+module.exports = $$.state(function () {
   var todos = [];
   
   this.addTodo = function (todo) {
     todo.id = $$.generateId();
     todos.push(todo);
-    flush();
+    this.flush();
   };
   
   this.listenTo(actions.addTodo, this.addTodo);
-  this.exports({
+  this.exports = {
     getTodos: function () {
       return todos;
     }
-  });
+  };
 });
 {% endhighlight %}
-So there are a few things happening here. First of all there is a flush function passed to the state callback. When called it will notify all listening components about a change in that specific state. We also see a variable `todos` declared. It is a good convention to declare variables for state values and point to the state itself with `this` to create methods mutating those values, like our `addTodo` method. We also see that we listen to the `addTodo` action, triggering the `addTodo` method in the state context. We also call an `exports` method. This method takes an object with methods that will be available when pointing to the state from your components. You might notice that the syntax here looks a lot like a component. That is no coinsidence. Lets look at some more code:
+So there are a few things happening here. We declear a variable `todos`. It is a good convention to declare variables for state values and point to the state itself with `this` to create methods mutating those values, like our `addTodo` method. We also see that we listen to the `addTodo` action, triggering the `addTodo` method in the state context. We also define an `exports` object. This object will be available when pointing to the state from your components. You might also have noticed `this.flush()`. This is the state notifying any component listening about a change.
 {% highlight javascript %}
 var $$ = require('jframework');
 var actions = require('actions');
 var AppState = require('./AppState.js');
-module.exports = $$.component(function (template) {
+module.exports = $$.component(function () {
 
   /* METHODS */
   this.addTodo = function (todo) {
@@ -443,15 +467,15 @@ module.exports = $$.component(function (template) {
   this.listenTo('click', 'button', this.addTodo);
   
   /* RENDER */
-  this.render(function () {
-    var todos = AppState.getTodos().map(function (todo) {
-      return template(
-        '<li id="' + todo.id + '">',
-          todo.title,
+  this.render = function (compile) {
+    var todos = this.map(AppState.getTodos(), function (compile) {
+      return compile(
+        '<li $$-id="id">',
+          this.title,
         '</li>'
       );
     });
-    return template(
+    return compile(
       '<div>',
         '<button>Add todo</button>',
         '<ul>',
@@ -459,10 +483,10 @@ module.exports = $$.component(function (template) {
         '</ul>',
       '</div>'
     );
-  });
+  };
 });
 {% endhighlight %}
-In this example our component listens to the `AppState`. If it triggers it will run the update method on itself. The update method rerenders the component. You can call `this.update()` at any time, though you will mostly use it with state updates. We are also listening to clicks on the button in our template. When triggered the component will create a new todo and call the `addTodo` action, passing the new todo. Lets sum this up.
+In this example our component listens to the `AppState`. If it triggers it will run the update method on itself. The update method rerenders the component. You can call `this.update()` at any time, though you will mostly use it with state updates. We are also listening to clicks on the button in our DOM representation. When triggered the component will create a new todo and call the `addTodo` action, passing the new todo. Lets sum this up.
 
 This is what happens when the component is made available to the user:
 
