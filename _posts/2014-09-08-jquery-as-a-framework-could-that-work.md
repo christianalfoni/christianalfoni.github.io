@@ -145,7 +145,7 @@ module.exports = $$.component(function () {
     
 });
 {% endhighlight %}
-This code defines a render method that runs whenever the component needs to render. The render method needs to return some compiled DOM representation. The one arugment passed to the render method does just that. The function takes unlimited arguments that builds up and returns a DOM representation. This syntax makes it very easy to write HTML in javascript and it gives some key advantages. Lets have a look at these advantages to get a better understanding of our first example.
+This code defines a render method that runs whenever the component needs to render. The render method needs to return some compiled DOM representation. The one argument passed, `compile`, does just that. The function takes unlimited arguments that builds up and returns a DOM representation. This syntax makes it very easy to write HTML in javascript and it gives some key advantages. Lets have a look at these advantages to get a better understanding of our first example.
 
 #### Scope in components
 {% highlight javascript %}
