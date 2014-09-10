@@ -184,7 +184,7 @@ module.exports = $$.component(function () {
 var $$ = require('jflux');
 $$.render(MyComponent({title: 'Hello world!'}), 'body');
 {% endhighlight %}
-You can pass properties to an object and use them with `this.props` in the scope of the component.
+You can pass properties to a component and use them with `this.props` in the scope of the component.
 #### Composing components
 {% highlight javascript %}
 /* Title.js */
@@ -267,7 +267,7 @@ module.exports = $$.component(function () {
   
 });
 {% endhighlight %}
-In the render callback you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFlux to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
+In the render method you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFlux to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
 
 **Pro tip** The compiled DOM representation could include components. Be sure to pass an ID property to keep track of the components in the list, `Item({id: this.id})`.
 #### Listening to UI events
@@ -500,8 +500,8 @@ The flow:
 1. User clicks button
 2. The **component** runs `addTodo`
 3. `addTodo` triggers the `addTodo` **action**, passing a new todo
-4. Our **state** called AppState is notified and adds an id to the new todo before adding it to the list
-5. The **Component** is notified about the update and runs its update method. That will in turn run the render callback and do a calculated DOM operation which adds a new li element to the ul
+4. Our **state** called AppState is notified and adds an id to the new todo before adding it to the list. Then it flushes to notify any listening components
+5. The **Component** is notified about the update and runs its update method. That will in turn run the render method which results in a calculated DOM operation that adds a new li element to the ul
 
 As highlighted in bold, this is the flow:
 {% highlight console %}
