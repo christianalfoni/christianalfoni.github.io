@@ -12,7 +12,7 @@ What I have realised though is that I never use all the features the framework h
 
 It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better? Something you could use in legacy projects and something that feels more of a stepping stone, than a giant leap.
 
-You can take a look at the API documentation and download examples over at the [repo](https://github.com/christianalfoni/jframework), but there will be lots of code examples here, so please read on.
+You can take a look at the API documentation and download examples over at the [jFlux repo](https://github.com/christianalfoni/jflux), but there will be lots of code examples here, so please read on.
 
 ### Getting to the core of it
 You basically want to control two things in your application. **State** and **UI**. If some state changes you want the UI to update. If the user interacts with the UI, you probably want some state to update.
@@ -122,17 +122,17 @@ And this is how FLUX scales. You keep adding stores and components and it does n
 
 So FLUX is great and with React JS as your component tool you have a very good setup. My issues with React JS though is the philosphy of rerendering the whole application on any state changes, instead of notifying the specific components (UI) that rely on those changes. React JS is also complex. There are many tools, addons and method names to keep track of. It is neither a complete framework like Ember JS and Angular JS, at least not yet. This is not to say React JS is bad, it is awesome! It just does not solve everything I need it to solve.
 
-### jFramework in short
-jFramework takes the principles of FLUX, forcing a unidirectonal flow, but does not have a philosophy of rerendering the whole application on state changes. Only components that depend on certain states will do a smart rerender, removing/adding/replacing DOM content required to keep in sync. Any nested components will only be affected if their parent component passes properties that have changed. jFramework also introduces all the tools needed to build an application, like a router, actions and state stores. It is also focused on being a very restricted and simple API. It should be easy to understand, remember and be productive in. And of course have fun with :-)
+### jFlux in short
+jFlux takes the principles of FLUX, forcing a unidirectonal flow, but does not have a philosophy of rerendering the whole application on state changes. Only components that depend on certain states will do a smart rerender, removing/adding/replacing DOM content required to keep in sync. Any nested components will only be affected if their parent component passes properties that have changed. jFlux also introduces all the tools needed to build an application, like a router, actions and state stores. It is also focused on being a very restricted and simple API. It should be easy to understand, remember and be productive in. And of course have fun with :-)
 
 #### So you thought jQuery was out?
-React JS uses a string representation of the UI before and after a state change to calculate DOM operations that is required to make the necessary changes to the UI. jFramework does something similar. It builds up its own internal structure of the UI using jQuery objects and checks differences on an object level, not a string level. The nice thing about jQuery is the amazing amounts of plugins and when put in a composable component concept becomes even more powerful.
+React JS uses a string representation of the UI before and after a state change to calculate DOM operations that is required to make the necessary changes to the UI. jFlux does something similar. It builds up its own internal structure of the UI using jQuery objects and checks differences on an object level, not a string level. The nice thing about jQuery is the amazing amounts of plugins and when put in a composable component concept becomes even more powerful.
 
 I think it is time to check some code. All the examples below are shown in the CommonJS pattern so that you can see how the code is written with modules. You are free to use it globally though, just make sure you load jQuery first.
 
 ### Components
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
     this.render = function (compile) {
@@ -149,7 +149,7 @@ This code defines a render-callback that runs whenever the component needs to re
 
 #### Scope in components
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   var myStaticValue = 'foo';
@@ -167,7 +167,7 @@ In this example we have a string value of `foo`, but it could have been a number
 #### Passing properties to a component
 {% highlight javascript %}
 /* MyComponent.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.render = function (compile) {
@@ -181,14 +181,14 @@ module.exports = $$.component(function () {
 });
 
 /* main.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 $$.render(MyComponent({title: 'Hello world!'}), 'body');
 {% endhighlight %}
 You can pass properties to an object and use them with `this.props` in the scope of the component.
 #### Composing components
 {% highlight javascript %}
 /* Title.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.render = function (compile) {
@@ -202,7 +202,7 @@ module.exports = $$.component(function () {
 });
 
 /* MyComponent.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 var Title = require('./Title.js');
 module.exports = $$.component(function () {
 
@@ -221,7 +221,7 @@ You can use a component inside an other component. If the title value passed by 
 Inspired by Angular JS it is possible to add attributes to your DOM representation with property values of your component. Lets have a look:
 
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
  
   this.render = function (compile) {
@@ -242,7 +242,7 @@ In this example we define a `listClass` object that defines class names as keys 
 
 #### Create lists
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
   
   var list = [{id: '1', title: 'foo'}, {id: '2', title: 'bar'}];
@@ -267,13 +267,13 @@ module.exports = $$.component(function () {
   
 });
 {% endhighlight %}
-In the render callback you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFramework to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
+In the render callback you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFlux to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
 
 **Pro tip** The compiled DOM representation could include components. Be sure to pass an ID property to keep track of the components in the list, `Item({id: this.id})`.
 #### Listening to UI events
-A design decision in jFramework is to "manifest" as much as possible. Like actions manifest the state changes your application can do, `listenTo` does the same to components, and also state objects. Instead of reading through your DOM representation to figure out what interaction can be done, you have your list of listeners.
+A design decision in jFlux is to "manifest" as much as possible. Like actions manifest the state changes your application can do, `listenTo` does the same to components, and also state objects. Instead of reading through your DOM representation to figure out what interaction can be done, you have your list of listeners.
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.log = function () {
@@ -292,7 +292,7 @@ module.exports = $$.component(function () {
 {% endhighlight %}
 You can listen to UI events with normal jQuery code, using `listenTo`. The callback passed will be bound to the component context, making `this` point to the component. In this case the top node was the button to listen for. If the button was further down in the template tree you would do this:
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.log = function () {
@@ -313,15 +313,15 @@ module.exports = $$.component(function () {
 {% endhighlight %}
 As you can see you use jQuery delegated events. You can use any jQuery selector to handle UI events in your template.
 #### Using jQuery plugins
-There are lots of jQuery plugins available and you can use them with jFramework. Normally when triggering plugins you do this:
+There are lots of jQuery plugins available and you can use them with jFlux. Normally when triggering plugins you do this:
 {% highlight javascript %}
 $('#myDiv').somePlugin();
 {% endhighlight %}
 
-In jFramework you use a `plugin` method to achieve the same thing:
+In jFlux you use a `plugin` method to achieve the same thing:
 
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.plugin('somePlugin');
@@ -354,14 +354,14 @@ You can use any jQuery selector as the second argument. If the last argument is 
 /* jQuery way */
 $('#myPlugin').somePlugin({option1: 'value1'});
 
-/* jFramework way */
+/* jFlux way */
 this.plugin('somePlugin', '#myPlugin', {options1: 'value1'});
 
 {% endhighlight %}
 So f.ex. a dropdown from the Bootstrap library could become a configurable component by doing something like this:
 {% highlight javascript %}
 /* BootstrapDropdown.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.component(function () {
 
   this.plugin('dropdown');
@@ -403,7 +403,7 @@ Now you are starting to see how powerful these components are becoming. Any jQue
 To update any state in your application you will need an action. Actions can be defined as easily as:
 {% highlight javascript %}
 /* myAction.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 module.exports = $$.action();
 
 /* someOtherFile.js */
@@ -413,7 +413,7 @@ myAction('foo', 'bar');
 As you can see in the example you can call that action with any number of arguments. These arguments will be passed to anyone who is listening to the action. You will probably have quite a few actions, so for conveniance you can do:
 {% highlight javascript %}
 /* actions.js */
-var $$ = require('jframework');
+var $$ = require('jflux');
 var actions = $$.action([
   'addTodo',
   'removeTodo'
@@ -426,9 +426,9 @@ actions.removeTodo();
 {% endhighlight %}
 This gives you a manifest of what actions are possible in your application. These actions defines what kind of state changes can be done. Just by reading your list of actions you see what your application is able to do.
 ### States
-A state in jFramework can listen to actions, change their internal state and notify components about state changes.
+A state in jFlux can listen to actions, change their internal state and notify components about state changes.
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 var actions = require('actions');
 module.exports = $$.state(function () {
   var todos = [];
@@ -449,7 +449,7 @@ module.exports = $$.state(function () {
 {% endhighlight %}
 So there are a few things happening here. We declear a variable `todos`. It is a good convention to declare variables for state values and point to the state itself with `this` to create methods mutating those values, like our `addTodo` method. We also see that we listen to the `addTodo` action, triggering the `addTodo` method in the state context. We also define an `exports` object. This object will be available when pointing to the state from your components. You might also have noticed `this.flush()`. This is the state notifying any component listening about a change.
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 var actions = require('actions');
 var AppState = require('./AppState.js');
 module.exports = $$.component(function () {
@@ -505,7 +505,7 @@ The flow:
 
 As highlighted in bold, this is the flow:
 {% highlight console %}
-| jFramework |
+| jFlux |
 
     |---------|     |-------|     |-----------|
 --> | ACTIONS | --> | STATE | --> | COMPONENT | --
@@ -517,10 +517,10 @@ As highlighted in bold, this is the flow:
 What is really nice about this is that if any other component needs to know about updates to the todos, they just have to listen to `AppState` and they will be notified and update themselves accordingly. 
 
 ### What is a framework without a router?
-jFramework has a router that supports both hash urls and modern popstate. It supports dynamic urls and can redirect to other urls. This is a typical setup:
+jFlux has a router that supports both hash urls and modern popstate. It supports dynamic urls and can redirect to other urls. This is a typical setup:
 
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 var App = require('./App.js');
 var Posts = require('./Posts.js');
 var Post = require('./Post.js');
@@ -540,13 +540,13 @@ $$.route('/posts/{id}', function (params) {
 $$.route('*', '/');
 
 {% endhighlight %}
-jFramework will use hash tags by default. The framework automatically unloads existing components when you target a node with a new component. If you target a node with the same kind of component it will not render a new one, but update the existing one if the properties has changed.
+jFlux will use hash tags by default. The framework automatically unloads existing components when you target a node with a new component. If you target a node with the same kind of component it will not render a new one, but update the existing one if the properties has changed.
 
 #### Nested routes
-jFramework takes a different strategy in nested routes. Since it is aware of what components that are in the DOM it is every effective at handling only needed changes, much like components themselves. Lets look at an example:
+jFlux takes a different strategy in nested routes. Since it is aware of what components that are in the DOM it is every effective at handling only needed changes, much like components themselves. Lets look at an example:
 
 {% highlight javascript %}
-var $$ = require('jframework');
+var $$ = require('jflux');
 var App = require('./App.js');
 var Posts = require('./Posts.js');
 var Post = require('./Post.js');
@@ -568,7 +568,7 @@ $$.route('/posts/{id}', function (params) {
 
 {% endhighlight %}
 
-This gives a clear definition of what happens when hitting the route. You could even make the route do different things based on some state. Maybe if there is a user logged in you render more components to the page. You can do whatever you want. Do not worry about overriding components as they will either be updated or removed automatically by jFramework.
+This gives a clear definition of what happens when hitting the route. You could even make the route do different things based on some state. Maybe if there is a user logged in you render more components to the page. You can do whatever you want. Do not worry about overriding components as they will either be updated or removed automatically by jFlux.
 
 ### Summary
-You can read the full API documentation and the current state of the project at [jFramework](https://github.com/christianalfoni/jframework). Hopefully I get my ideas through with this post and I would sure appreciate you giving it a try. If you do, please provide some feedback. Thanks for reading!
+You can read the full API documentation and the current state of the project at [jFlux](https://github.com/christianalfoni/jflux). Hopefully I get my ideas through with this post and I would sure appreciate you giving it a try. If you do, please provide some feedback. Thanks for reading!
