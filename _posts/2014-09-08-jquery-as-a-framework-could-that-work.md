@@ -8,7 +8,7 @@ tags: ["javascript"]
 
 We have all come to know and love our JS frameworks. Ember JS, Angular JS, React JS, Backbone, Knockout etc. All of them has given us the power of productivity and they make it even more fun to write code.
 
-What I have realised though is that I never use all the features the framework has to offer, mostly a small percentage of it. There are so many concepts, so many methods, sometimes it does not look like JavaScript and I am still having problems keeping my code sane and scalable when it reaches grows to a certain point.
+What I have realised though is that I never use all the features the framework has to offer, mostly a small percentage of it. There are so many concepts, so many methods, sometimes it does not look like JavaScript and I am still having problems keeping my code sane and scalable when it grows to a certain point.
 
 It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better? Something you could use in legacy projects and something that feels more of a stepping stone, than a giant leap.
 
