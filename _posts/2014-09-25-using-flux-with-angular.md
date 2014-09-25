@@ -102,7 +102,7 @@ It changed to some variation of this:
          
 {% endhighlight %}
 
-The application state that does not fit in a Model-concept are now spread around different controllers. The problem is that new implementations might not have access to the application state it needs, because it is defined in an existing controller. To try to fix it we trigger events, we use $rootScope, we start nesting controllers and we use services. My opinion is that MVC fundamentally does not tackle application state, and with good reason, it did not have to. In traditional server side MVC applications there was no application state, or at least extremely limited compared to modern web applications.
+The application state that does not fit in a Model-concept has a tendency to get spread between controllers. The problem is that new implementations might not have access to the application state it needs, because it is defined in an existing controller. To try to fix it we trigger events, we use $rootScope, we start nesting controllers and we use services. My opinion is that MVC fundamentally does not tackle application state, and with good reason, it did not have to. In traditional server side MVC applications there was no application state, or at least extremely limited compared to modern web applications.
 
 So to summarize this. We need more than a "Model"-concept that reflects the state of database entries in a view. We need to handle a lot of application state that only lives in the browser. We also need a way to react to statechanges with function calls effectively. But the most important thing here is that we need a specific "application state"-concept that lets us easily reason about our application structure.
 
