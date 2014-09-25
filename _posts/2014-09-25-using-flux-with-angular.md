@@ -311,7 +311,7 @@ angular.module('todomvc')
   });
 {% endhighlight %}
 
-As we can see there is not much going on in our controller. We are only passing actions to the "top" of our application, awaiting application wide state changes. 
+As we can see there is not much going on in our controller. We are mostly passing actions to the "top" of our application, awaiting application wide state changes, and some controller specific behaviour.
 
 #### Reacting to statechange without $watch
 As all statechanges now happens with actions there is no need to use the expensive $watch any longer. This section of code in the todomvc.com **controller**...
@@ -507,6 +507,6 @@ angular.module('todomvc')
 {% endhighlight %}
 
 ### Summary
-I think FLUX is a very exciting way to go. It is an architecture based on our experiences so far building very complex web applications. MVC was, and still is, a very good fit for traditional web applications, but as we put more and more application state into our code we need something that can handle it.
+I think FLUX is a very exciting way to go. It is an architecture based on our experiences so far building very complex web applications. MVC was, and still is, a very good fit for traditional web applications, but as we put more and more application state into our code we need something that keeps us sane.
 
 If you want to try out this plugin you can download it from this repo [angular-flux](https://github.com/christianalfoni/angular-flux). There you can also find the complete refactored TodoMVC application. If this was not your cup of tea I hope it at least gave you some "food for through". Thanks for listening!
