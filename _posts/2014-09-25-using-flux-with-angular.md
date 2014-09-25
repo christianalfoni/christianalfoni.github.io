@@ -71,7 +71,7 @@ angular.module('app', [])
 {% endraw %}
 {% endhighlight %}
 
-What we see here is how the reaction to a statechange differs when we want to update the UI and trigger a function. The issue here with Angular is that we start to handle state inside the controller. The only way to react to a statechange with a function call is to $watch the state via the $scope. This code actually belongs in our "AppState"-service.
+What we see here is how the reaction to a statechange differs when we want to update the UI and when we want to trigger a function. A UI update happens automatically, but if we want to trigger a function we need to use the $watch method on our $scope. The issue here is that we start to handle state inside the controller. The $watch code actually belongs in our "AppState"-service.
 
 #### The lines and the arrows
 Something else that changed drastically moving MVC to the browser environment was the MVC pattern itself:
