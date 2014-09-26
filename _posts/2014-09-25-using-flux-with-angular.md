@@ -115,7 +115,7 @@ The message I am trying to pass here is that FLUX can help you build better apps
 But lets get into the good stuff. I am going to go through implementation specific details of refactoring the Angular JS Todo app at: [todomvc.com](http://www.todomvc.com) and explain how it makes it easier to scale the application at a later point. Please use the todomvc.com Angular JS project as a reference.
 
 ### The FLUX service
-To create an Angular JS application with the FLUX architecture we need some tools. Specifically this [ANGULAR-FLUX](https://github.com/christianalfoni/angular-flux) plugin. It exposes a "flux" service that you can use to create your actions and your stores. The plugin does not have a dispatcher concept as the dispatcher only passes an action to a store.
+To create an Angular JS application with the FLUX architecture we need some tools. Specifically this [angular-flux](https://github.com/christianalfoni/angular-flux) plugin. It exposes a "flux" service that you can use to create your actions and your stores. The plugin does not have a dispatcher concept as the dispatcher only passes an action to a store.
 
 So let us build an "actions"-service first:
 
@@ -168,7 +168,7 @@ angular.module('todomvc')
   });
 {% endhighlight %}
 
-Okay, so what did we do here? First of all we defined the actions that we will use shortly. Then we created a store that is responsible for changing all the state in our application. To populate our scope with the state from the store we use the **store.addStateTo($scope)** method. So in our HTML we can now do this:
+Okay, so what did we do here? First of all we defined the actions that we will use shortly. Then we created a store that is responsible for changing all the state in our application. To populate our scope with the state from the store we use the **store.addStateTo($scope)** method. So in our HTML we can now grab state like normal:
 
 {% highlight html %}
 {% raw %}
@@ -189,7 +189,7 @@ So lets have a look at how a specific state is changed. Lets add a todo:
 </form>
 {% endhighlight %}
 
-By convention we point to a $scope object called "titles" and its "newTodo" property. This property is used to later reference the new title of the todo. You might argue that this is application state and should be put into our store, but that would create a "two way flow" of data that we do not want. In this case we just want to grab the value of the title input directly from our controller.
+By convention we point to a $scope object called "titles" and its "newTodo" property. This property is used to later reference the new title of the todo. You might argue that this is application state and should be put into our store, but that would create a "two way flow" of data between the controller and the store that we do not want. Two way databinding is great between the template and the controller, to f.ex. in this case grab the value of the input, but it ends there. The only reason for putting this "titles.newTodo" state in the store would be to allow other controllers, also in the future, to access the state. My decision was that "titles.newtodo" is specific to that controller.
 
 {% highlight javascript %}
 angular.module('todomvc')
@@ -248,7 +248,7 @@ So first of all we create a method for handling the state change. All it does is
 In traditional Facebook FLUX we would now have to trigger an event to notify the components about an update. In Angular JS that is not necessary because of the databinding. The state of this store has been attached to the scope of our controller so everything just works. We are still honoring the principles of FLUX, the state is only flowing down.
 
 ### Lets look at some improvements
-Now you have actually seen the whole thing in action. Everything from now on will work exactly like this. We will only trigger actions and our store handles the state update. It is a "one way flow", meaning that all statechanges start at the "top" of your application and are then being acted upon in your stores and further down into your controllers and templates.
+Now you have actually seen the whole thing in action. Everything from now on will work exactly like this. We will only trigger actions and our store handles the state update. It is a "one way flow", meaning that all statechanges start at the "top" of your application and are then being acted upon in your stores first, then further down into your controllers and finally reflecting any state in the templates. We allow for two-way databinding between the template and the controller specific properties, as they are tightly connected and that is where two way databinding should occurr. But to change state in a store you must trigger an action. That is the important part.
 
 #### A very short controller
 This is actually the whole controller now:
@@ -343,7 +343,7 @@ this.updateStats = function () {
 };
 {% endhighlight %}
 
-This **updateStats** method gets called when an "addTodo"-action has been handled and the store saves the todos.
+This **updateStats** method gets called whenever a todo is added, removed or a todo has changed its completed state.
 
 #### Actions are awesome
 Lets imagine that we wanted to implement WebSockets and update our list with new todos as they were added by other users. We could reuse our action "addTodo". This is a websocket jibberish example, but the point here is the reuse of the action:
@@ -509,4 +509,4 @@ angular.module('todomvc')
 ### Summary
 I think FLUX is a very exciting way to go. It is an architecture based on our experiences so far building very complex web applications. MVC was, and still is, a very good fit for traditional web applications, but as we put more and more application state into our code we need something that keeps us sane.
 
-If you want to try out this plugin you can download it from this repo [angular-flux](https://github.com/christianalfoni/angular-flux). There you can also find the complete refactored TodoMVC application. If this was not your cup of tea I hope it at least gave you some "food for through". Thanks for listening!
+If you want to try out this plugin you can download it from this repo [angular-flux](https://github.com/christianalfoni/angular-flux). There you can also find the complete refactored TodoMVC application. If this was not your cup of tea I hope it at least gave you some "food for thought". Thanks for listening!
