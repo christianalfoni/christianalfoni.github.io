@@ -12,7 +12,7 @@ What I have realised though is that I never use all the features the framework h
 
 It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better? Something you could use in legacy projects and something that feels more of a stepping stone, than a giant leap.
 
-You can take a look at the API documentation and learn more aboutn **jFlux** over at [jflux.io](http://www.jflux.io), but there will be lots of code examples here, so please read on.
+You can take a look at the API documentation and learn more about **jFlux** over at [jflux.io](http://www.jflux.io), but there will be lots of code examples here, so please read on.
 
 ### Getting to the core of it
 You basically want to control two things in your application. **State** and **UI**. If some state changes you want the UI to update. If the user interacts with the UI, you probably want some state to update.
