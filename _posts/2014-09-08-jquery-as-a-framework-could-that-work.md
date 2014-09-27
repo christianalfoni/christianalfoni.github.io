@@ -245,14 +245,14 @@ In this example we define a `listClass` object that defines class names as keys 
 var $$ = require('jflux');
 module.exports = $$.component(function () {
   
-  var list = [{id: '1', title: 'foo'}, {id: '2', title: 'bar'}];
+  var list = ['foo', 'bar'];
   
   this.render = function () {
   
     var items = this.map(list, function (compile) {
       return compile(
         '<li>',
-          this.index + ' ' + this.item,
+          this.index + '. ' + this.item,
         '</li>'
       );
     });
