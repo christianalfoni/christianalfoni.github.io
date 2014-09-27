@@ -12,7 +12,7 @@ What I have realised though is that I never use all the features the framework h
 
 It is difficult to identify the exact point where you start feeling bad about your code, and what you did to get to that point. Though frameworks helps you feel good about your code in general, the mental image of your application, implementation of new code and introduction of new team members is a big challenge nevertheless. So I have been pondering on this idea. What if I take the really awesome concepts from the big frameworks and create a very small and strict one? Would it make things better? Something you could use in legacy projects and something that feels more of a stepping stone, than a giant leap.
 
-You can take a look at the API documentation and download examples over at the [jFlux repo](https://github.com/christianalfoni/jflux), but there will be lots of code examples here, so please read on.
+You can take a look at the API documentation and learn more aboutn **jFlux** over at [jflux.io](http://www.jflux.io), but there will be lots of code examples here, so please read on.
 
 ### Getting to the core of it
 You basically want to control two things in your application. **State** and **UI**. If some state changes you want the UI to update. If the user interacts with the UI, you probably want some state to update.
@@ -226,7 +226,7 @@ module.exports = $$.component(function () {
  
   this.render = function (compile) {
     this.listClass = {
-      active: $$.path() === '/'
+      'active': $$.path() === '/'
     };   
     return compile(
       '<ul $$-class="listClass">',
@@ -251,8 +251,8 @@ module.exports = $$.component(function () {
   
     var items = this.map(list, function (compile) {
       return compile(
-        '<li $$-id="id">',
-          this.title,
+        '<li>',
+          this.index + ' ' + this.item,
         '</li>'
       );
     });
@@ -267,9 +267,8 @@ module.exports = $$.component(function () {
   
 });
 {% endhighlight %}
-In the render method you can create an array of compiled DOM representations. If you are going to mutate the list itself or its contents, the main node of the list item will need an ID. The ID helps jFlux to keep track of the items in the list when updating it. Usually you will have an ID related to the items in a list, but it can be anything, just as long as it is unique for the item. To create the list of DOM representations you use the `this.map` method. It takes the list and a callback. The callback will set the current item in the list as its context, allowing you to easily reference the list item and compile some DOM representation for it.
+In the render method you can create an array of compiled DOM representations. You do that by using a **this.map** method. The context of the map callback function has an item property, an index property and you are free to add more properties to f.ex. have dynamic classnames like the example earlier. The item property is the actual item in the list, while index is of course the index in the list.
 
-**Pro tip** The compiled DOM representation could include components. Be sure to pass an ID property to keep track of the components in the list, `Item({id: this.id})`.
 #### Listening to UI events
 A design decision in jFlux is to "manifest" as much as possible. Like actions manifest the state changes your application can do, `listenTo` does the same to components, and also state objects. Instead of reading through your DOM representation to figure out what interaction can be done, you have your list of listeners.
 {% highlight javascript %}
