@@ -654,7 +654,7 @@ var Form = React.createClass({
   componentWillMount: ...
   componentDidMount: ...
   registerInputs: ...
-  validate: validate: function (component) {
+  validate: function (component) {
   
     if (!component.props.validations) {
       return;
@@ -773,6 +773,6 @@ Sweet! We got through it! And while we sum this up, enjoy your virtual cookie:
 
 As stated this article was written to point out the insane complexity we confront when building good user experiences in forms. The big takeaway here is that a form is an isolated implementation, just like a live search, autocomplete, calendar etc. I do not recommend implementing it as a "part of your application logic". The other takeaway here is that you will need a dynamic, but tight relationship between your form and the inputs. The reason is that user inputs will be validated on the input itself, but also needs to notify the form. And the same when the form receives an error from the server. It needs to invalidate itself and the related inputs. It is also worth mentioning that "empty value" should only be validated if you have a "required" flag on your input. 
 
-As stated above this article resulted in an extension for React JS, [formsy-react](???). This will essentially just give you a mixin to your already existing form input components, add validation to it and expose some methods that will help you display things the way you want.
+As stated above this article resulted in an extension for React JS, [formsy-react](https://github.com/christianalfoni/formsy-react), and for Angular JS, [formsy-angular](https://github.com/christianalfoni/formsy-angular). This will essentially just give a form and a toolbox to build whatever inputs you want in your application, even non-traditional form inputs and you still get the validation for free.
 
 Thanks for taking the time to read through this article and I hope it will help you handle forms and validation with React JS.
