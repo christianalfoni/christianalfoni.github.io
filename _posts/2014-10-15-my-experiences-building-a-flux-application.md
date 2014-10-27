@@ -232,6 +232,7 @@ var TodosStore = flux.createStore({
     }
   }
 });
+module.exports = TodosStore;
 {% endhighlight %}
 
 So lets just see how this is used in a component before going over the concept:
@@ -263,6 +264,7 @@ var MyComponent = React.createClass({
     );
   }
 });
+module.exports = MyComponent;
 {% endhighlight %}
 
 Okay. So what I noticed building JSFridge was that my actions always mapped directly to a method. If the action was called "addTodo", the method handling that action in my store was also called "addTodo". That is why actions in "flux-react" map directly to a method.
