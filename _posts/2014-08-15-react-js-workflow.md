@@ -8,6 +8,8 @@ tags: ["javascript"]
 
 I have been working with **React JS** for a few days and I must say I am impressed. You can not really compare it to complete frameworks like **Angular JS** or **Ember JS**, but at the same time it is worth mentioning in the same context. A full framework increases your development speed and is a dream when it comes to prototyping, but building a high performance web application is easier when you control each part. More on that in a later post, lets dive into how I found an ideal way to work with React JS.
 
+**Update:** I updated the boilerplate with better testing and better handling of dependencies. Wrote about it here, [React JS and a browserify workflow, PART 2](http://christianalfoni.github.io/javascript/2014/10/30/react-js-workflow-part2.html).
+
 ### The problem
 I really do not appreciate the simplicity of examples shown on probably all library/framework sites. Nobody builds an application in the global scope, nobody builds an application in a single file and everybody wants to make their code production ready. The **React JS** site is no different and it took me quite some time creating a good workflow. This is what I needed:
 
