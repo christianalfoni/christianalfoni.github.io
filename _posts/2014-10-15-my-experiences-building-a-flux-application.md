@@ -315,7 +315,7 @@ var TodosStore = flux.createStore({
 module.exports = TodosStore;
 {% endhighlight %}
 
-As you can see you just create an object, just like a React JS mixin, and bring it into your main store file. The properties values that merge are: **actions**, **getInitialState**, **exports** and **mixins**. Any other methods defined will also be merged into the store. This will keep you sane and prevent you from hitting some kinda of dependency problem.
+As you can see you just create an object, just like a React JS mixin, and bring it into your main store file. The properties values that merge are: **actions**, **exports** and **mixins**. Any other methods and/or state properties will also be merged into the store. This will keep you sane and prevent you from hitting some kinda of dependency problem.
 
 What I also found to be useful on JSFridge was putting all states in one mixin. That gives you a lookup of all states. The same for exports. Let me show you what I mean:
 
