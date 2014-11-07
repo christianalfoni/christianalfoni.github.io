@@ -267,7 +267,7 @@ Okay. So what I noticed building JSFridge was that my actions always mapped dire
 An other concept is the "exports". You only want to expose a set of getter methods that your components can use. Three things happens with exports:
 
 1. The exports object is the object that is returned when creating a store
-2. All methods in exports are bound to the state object, letting you use "this" to point to the state object in the store
+2. All methods in exports are bound to the store, letting you use "this" to point to the state in the store
 3. Exported values are automatically deep cloned
 
 Now that last part needs a bit more explenation. The state, in your store should only be mutated (changed) inside the store. F.ex. returning a list of todos to a component should not allow that component to do changes there that is reflected in the store. This is because of debugging. If lots of different components starts to change state directly in your store you will get into trouble. So instead the "flux-react" store makes sure that any value returned from exports is deep cloned, right out of the box. The same goes for complex objects passed as arguments to an action. We do not want them to be changed later outside of the store and by doing so change the state of the store.
