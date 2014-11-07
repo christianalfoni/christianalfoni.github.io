@@ -119,73 +119,91 @@ When a store has updated their state, a "change" event is emitted which any comp
 So the flow is: **DISPATCHER -> STORES -> COMPONENTS**. If a component wants to change state they have to send an intent to the dispatcher. In MVC, you often have: **MODEL <-> CONTROLLER <-> VIEW**, state is changed in both directions. So think of double digits of models, controllers and views, all going in both directions, crossing each other. It gets problematic! In FLUX though, it does not matter how complex your application gets, the flow is the same all over. And that is exactly what makes FLUX easy to work with.
 
 ### Looking at the code
-In this example I will use a FLUX library I built that has its own dispatcher and store, extending the React library itself. You can get more information on that here: [flux-react](https://github.com/christianalfoni/flux-react).
+In this example I will use a FLUX library I built that uses these concepts, though simplifies a bit. I have been using FLUX architecture to build [www.jsfridge.com](http://www.jsfridge.com) and through that experience I learned quite a bit. You can find the library here: [flux-react](https://github.com/christianalfoni/flux-react).
 
 **main.js**
 {% highlight javascript %}
 /** @jsx React.DOM */
-var React = require('flux-react');
+var React = require('react');
 var Checkbox = require('./Checkbox.js');
+
 React.renderComponent(<Checkbox/>, document.body);
 {% endhighlight %}
+Just rendering a simple React component to the body.
+
+**actions.js**
+{% highlight javascript %}
+/** @jsx React.DOM */
+var flux = require('flux-react');
+
+module.exports = flux.createActions([
+  'changeNotify'
+]);
+{% endhighlight %}
+Instead of using a dispatcher we create actions that stores can listen to. It works the same way, though you more explicitly define what actions can be done within your application and it is far less verbose.
+
 **UserStore.js**
 {% highlight javascript %}
-var React = require('flux-react');
-var user = {
-  notify: false
-};
-module.exports = React.createStore({
-  getNotify: function () {
-    return user.notify;
+var flux = require('flux-react');
+var actions = require('./actions.js');
+
+module.exports = flux.createStore({
+  user: {
+    notify: false
   },
-  
-  // dispatch runs whenever a new action is received
-  // from the dispatcher
-  dispatch: function (payload) {
-    switch (payload.type) {
-      case 'CHANGE_NOTIFY':
-        user.notify = payload.notify;
-        this.flush(); // Give notice that changes has been done
-        break;
+  actions: [
+    actions.changeNotify
+  ],
+  changeNotify: function () {
+    this.user.notify = !this.user.notify;
+    this.emitChange();
+  },
+  exports: {
+    getUser: function () {
+      return this.user;
     }
   }
+ 
 });
 {% endhighlight %}
+The store holds the state of a user object and listens to the "changeNotify" action. Whenever triggered/called, it will map to a method with the same name. That method changes the state and then emits a change to all listening components. The store also exports a set of GETTER methods that will return state of the store. Any arguments passed with an action and any state returned from an export method will be cloned. This keeps the store immutable.
+
 **Checkbox.js**
 {% highlight javascript %}
 /** @jsx React.DOM */
-var React = require('flux-react');
+var React = require('react');
 var UserStore = require('./UserStore.js');
-module.exports = React.createClass({
+var actions = require('./actions.js');
 
-  // What stores the component is dependant of
-  stores: [UserStore], 
+module.exports = React.createClass({
   getInitialState: function () {
     return {
-      notify: UserStore.getNotify() 
+      user: UserStore.getUser() 
     };
   },
-  
-  // A react-flux callback that triggers when any
-  // of its dependant stores updates (flushes)
-  storesDidUpdate: function () {
+  componentWillMount: function () {
+    UserStore.addChangeListener(this.changeState);
+  },
+  componentWillUnmount: function () {
+    UserStore.removeChangeListener(this.changeState);
+  },
+  changeState: function () {
     this.setState({
-      notify: UserStore.getNotify()
+      user: UserStore.getUser()
     });
   },
   notify: function () {
-    React.dispatch({
-      type: 'CHANGE_NOTIFY',
-      notify: this.refs.checkbox.getDOMNode().checked
-    });
+    actions.changeNotify();
   },
   render: function () {
     return (
-      <input ref="checkbox" type="checkbox" checked={this.state.notify} onChange={this.notify}/>
+      <input ref="checkbox" type="checkbox" checked={this.state.user.notify} onChange={this.notify}/>
     )
   }
 });
 {% endhighlight %}
-Wow, that was a bit more code! Well, try to think of it like this. In the above examples, if we were to do any changes to the application we would probably have to move things around. In the FLUX example we have considered that from the start. Any changes to the application is adding, not moving things around. If you need a new store, just add it and make components dependant of it. If you need more views, create a component and use it inside any other component without affecting their current "parent controller or models".
+Here we grab the user from our store when the component instanciates. We also make sure to listen for any changes that results in an update of the components state. We also have a handler for triggering the action that will flip the "notify"-state in the store. Last, but not least, we render the UI.
 
-React JS and FLUX is still very new and I still need to try this out on a large application, but the concepts make sense. Hopefully this will help you get going with React JS and its FLUX architecture. Thanks for hearing me out!
+Wow, that was a bit more code! Well, try to think of it like this. In the above examples, if we were to do any changes to the application we would probably have to refactor and move code around to make existing state available. In the FLUX example we have considered that from the start. Any changes to the application is adding code, not refactoring. If you need a new store, just add it and make components dependant of it. If you need more views, create a component and use it inside any other component without affecting their current "parent controller or models". Want to move a component to a different part of the UI, just do it. It does not matter. In my experience, this is the power of FLUX.
+
+React JS and FLUX is still very new, but my experiences so far has been very positive. I did meet other challenges too that you can read more about in [My experiences building a flux application](http://christianalfoni.github.io/javascript/2014/10/27/my-experiences-building-a-flux-application.html), and it is all implemented in [flux-react](https://github.com/christianalfoni/flux-react). Thanks for reading!

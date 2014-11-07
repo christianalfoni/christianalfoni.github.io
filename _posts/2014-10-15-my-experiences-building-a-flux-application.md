@@ -73,7 +73,7 @@ So stores that are part of one section of your application should be contained w
 But now we run into a different problem. You can not put all your store code in one file, that will create quite a mess. The "CourseStore" of JSFridge is very big, but it is split into different files and handled much like "mixins" in React JS. We will look at a specific solution for this shortly.
 
 #### Not only change events
-A different issue I encountered was that not all state updates should trigger a change event. Let me use an example to explain this part:
+A different issue I encountered was that not all state updates should trigger a change event. Let me use a simple example to explain this part:
 
 In your store:
 {% highlight javascript %}
@@ -180,7 +180,7 @@ As you can see we call the action from the component, we listen to the action fr
 So to build a React JS application with these principles I have deviced a little library called [flux-react](https://github.com/christianalfoni/flux-react). The initial version was based on an early article I wrote about FLUX and React JS, but as time passes and you get more experience, the tools change. So this is the new version.
 
 #### Actions
-So actions are what links your components (and anything else that wants to change state) with your stores. You define them just by naming them.
+So actions are what links your components (and anything else that wants to change state) with your stores. You define them just by naming them. When calling an action the arguments will be deepCloned to avoid later mutation of complex objects passed to the store.
 
 {% highlight javascript %}
 var flux = require('flux-react');
@@ -202,13 +202,8 @@ var flux = require('flux-react');
 var actions = require('./actions.js');
 var TodosStore = flux.createStore({
 
-  // We use the same method as in React JS components to set the initial
-  // state
-  getInitialState: function () {
-    return {
-      todos: []
-    };
-  },
+  // We put the state directly on the store object
+  todos: [],
   
   // Then we point to the actions we want to react to in this store
   actions: [
@@ -218,12 +213,12 @@ var TodosStore = flux.createStore({
   // The action maps directly to a method. So action addTodo maps to the
   // method addTodo()
   addTodo: function (title) {
-    this.state.todos.push({title: title, completed: false});
+    this.todos.push({title: title, completed: false});
     this.emitChange();
   },
   
   // The methods that components can use to get state information
-  // from the store. The context of the methods is the state of the store. 
+  // from the store. The context of the methods is the store itself. 
   // The returned values are deepcloned, which means
   // that the state of the store is immutable
   exports: {
@@ -290,7 +285,7 @@ var RemoveMixin = {
     actions.removeTodo
   ],
   removeTodo: function (index) {
-    this.state.todos.splice(index, 1);
+    this.todos.splice(index, 1);
     this.emitChange();
   }
 };
@@ -302,17 +297,13 @@ var actions = require('./actions.js');
 var RemoveMixin = require('./RemoveMixin.js');
 
 var TodosStore = flux.createStore({
+  todos: [],
   mixins: [RemoveMixin],
-  getInitialState: function () {
-    return {
-      todos: []
-    };
-  },
   actions: [
     actions.addTodo
   ],
   addTodo: function (title) {
-    this.state.todos.push({title: title, completed: false});
+    this.todos.push({title: title, completed: false});
     this.emitChange();
   },
   exports: {
@@ -331,14 +322,10 @@ What I also found to be useful on JSFridge was putting all states in one mixin. 
 {% highlight javascript %}
 // FILE 1: All states are listed here
 var StatesMixin = {
-  getInitialState: function () {
-    return {
-      foo: 'bar',
-      moreState: {},
-      listState: [],
-      isDoingSomething: true
-    };
-  }
+  foo: 'bar',
+  moreState: {},
+  listState: [],
+  isDoingSomething: true
 };
 
 // FILE 2: Example handler
@@ -347,7 +334,7 @@ var Handler1Mixin = {
     actions.addToList
   ],
   addToList: function (item) {
-    this.state.listState.push(item);
+    this.listState.push(item);
     this.emitChange()
   }
 };
