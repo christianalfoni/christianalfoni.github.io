@@ -6,7 +6,7 @@ categories: javascript
 tags: ["javascript"]
 ---
 
-I wrote an article on working with React JS in a browserify workflow. Well, I got some more experience with it and here is PART2. You can grab this boilerplate at [flux-react-boilerplate](https://github.com/christianalfoni/flux-react-boilerplate).
+I wrote an article on working with React JS in a browserify workflow. Well, I got some more experience with it and here is PART2. You can grab this boilerplate at [react-app-boilerplate](https://github.com/christianalfoni/react-app-boilerplate).
 
 There were specifically two things we did not handle very well on the initial workflow:
 

@@ -79,7 +79,7 @@ The really good thing about the RequireJS setup is that you do not need to compi
 The not so good here is all the stuff you have to do to get it up and running. It does not feel right that the R-Optimizer has to put all files in the build folder, because you will only use the single bundle file anyways. I could not get the R-Optimizer to handle the bundling straight to a single file and handle the JSX stuff correctly. I could not get the Node `renderComponentToString` working while developing either, due to RequireJS caching the file. So that is only available in production, where the file will not update anyways.
 
 ### 2. Browserify
-Browserify lets you write your frontend javascript code like you would write Node code. The great thing about this, in the context of React JS, is that React JS runs both on the client and the server. To get up and running with this workflow you need quite a bit actually:
+Browserify lets you write your frontend javascript code like you would write Node code. The great thing about this, in the context of React JS, is that React JS runs both on the client and the server. To get up and running with this workflow you need quite a bit actually, but if you take a look at [React JS and a browserify workflow, PART 2](http://christianalfoni.github.io/javascript/2014/10/30/react-js-workflow-part2.html) you can grab an updated boilerplate which also has jasmine testing.
 
 1. Install the following npm modules: gulp, react, browserify, watchify, reactify, vinyl-source-stream, gulp-if, gulp-uglify, node-jsx and gulp-streamify
 2. Set up Gulp to handle the bundling and watching of your project
