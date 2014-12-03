@@ -83,7 +83,7 @@ We want the input inside **AddTodoComponent** to disable itself while the store 
 But this is not the only challenge with React JS rendering. Lets look at a couple of other things, but remember this when we look at EventEmitter2.
 
 ### React JS cascading renders
-One important detail about React JS that is often overlooked is how **setState** on a component affects the nested components. When you use **setState** the nested components will run a check to verify if they need to update the DOM. That means if a change event is being listened to on your application root node, whenever a change event is triggered from the store, all your components will do a render and a diff to produce any needed DOM operations. Lets visualize this:
+One important detail about React JS that is often overlooked is how **setState** on a component affects the nested components. When you use **setState** the nested components will run a check to verify if they need to update the DOM. That means if a change event is being listened to on your application root component and a change event is triggered from the store, all your components will do a render and a diff to produce any needed DOM operations. Lets visualize this:
 
 {% highlight javascript %}
 [Cascading render]
