@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Creating a workflow with WebPack"
-date:   2014-12-10 09:21:30
+date:   2014-12-13 09:21:30
 categories: javascript
 tags: ["javascript", "reactjs"]
 ---
