@@ -581,7 +581,7 @@ Out of the box any changes to the css/less will update without refreshing the pa
 
 <a name="imagesandfonts"></a>
 ### Images and fonts
-A typical css file that uses fonts and images. Now the web and fonts is a science in itself and heavily depends on your target browsers. In font loading examples we normally see 4 different formats added. woff, ttf, svg and eot. But that is hard to optimize, because only one of those formats will actually be used. Converting the font files to inline base64 string would cause all 4 to be included, increasing the file size unnecessarily. 
+A typical css file that uses fonts and images. Now, webfonts is a science in itself and heavily depends on your target browsers. In font loading examples we normally see 4 different formats added. woff, ttf, svg and eot. But that is hard to optimize, because only one of those formats will actually be used. Converting the font files to inline base64 string would cause all 4 to be included, increasing the file size unnecessarily. 
 
 Looking at [caniuse.com](http://caniuse.com) we see that modern browsers support woff and svg. So depending on your project I would suggest sticking to only one of those two formats. Doing so will let us optimize it. Let us look at the code so that you see what I mean:
 
