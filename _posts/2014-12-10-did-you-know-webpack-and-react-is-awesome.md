@@ -159,7 +159,8 @@ var bower_dir = __dirname + '/bower_components';
 module.exports = {
   entry: ['./app/main.js'],
   
-  // The resolve.alias object takes require expressions (require('react')) as keys and filepath to actual
+  // The resolve.alias object takes require expressions 
+  // (require('react')) as keys and filepath to actual
   // module as values
   resolve: {
     alias: {
