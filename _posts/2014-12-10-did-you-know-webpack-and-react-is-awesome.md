@@ -5,7 +5,9 @@ date:   2014-12-13 09:21:30
 categories: javascript
 tags: ["javascript", "reactjs"]
 ---
-Previously I have written a couple of articles about how to set up a workflow with React JS. The solution provided was [browserify](http://browserify.org) with [gulp](http://gulpjs.com). If React JS is not your thing I think you still will get a lot of value out of this article, so please read on. To build a workflow for React JS with browserify and gulp you need a lot of dependencies and you have to write quite a bit of code. You might appreciate the flexibility gulp brings, but as the requirements of bundling your project grows, your workflow implementation becomes very complex. Nevertheless there are some core concepts you want to bring in to your React JS workflow:
+Previously I have written a couple of articles about how to set up a workflow with React JS. The solution provided was [browserify](http://browserify.org) with [gulp](http://gulpjs.com). If React JS is not your thing I think you still will get a lot of value out of this article, so please read on. 
+
+To build a workflow for React JS with browserify and gulp you need a lot of dependencies and you have to write quite a bit of code. You might appreciate the flexibility gulp brings, but as the requirements of bundling your project grows, your workflow implementation becomes very complex. Nevertheless there are some core concepts you want to bring in to your React JS workflow:
 
 1. Bundle JavaScript with Common JS (to use components in Node JS)
 2. Sourcemapping
@@ -68,11 +70,11 @@ I also recommend using a `package.json` file to configure a script that will run
 }
 {% endhighlight %}
 
-Lets just briefly talk about the script we have added here: `"webpack-dev-server --devtool eval --progress --colors"`. When you run `npm run dev` in your terminal this is what will be executed. It runs **webpack-dev-server** with some arguments. *--devtool eval* will add sourcemapping to your code. It is really important that you do it like this. Sourcemapping can also be achieved with *--d*, but that is a lot slower. *--progress* and *--colors* will just improve the feedback you get in the terminal when running your workflow.
+Let us just briefly talk about the script we have added here: `"webpack-dev-server --devtool eval --progress --colors"`. When you run `npm run dev` in your terminal this is what will be executed. It runs **webpack-dev-server** with some arguments. *--devtool eval* will add sourcemapping to your code. It is really important that you do it like this. Sourcemapping can also be achieved with *--d*, but that is a lot slower. *--progress* and *--colors* will just improve the feedback you get in the terminal when running your workflow.
 
 <a name="runningworkflow"></a>
 ### Running the workflow
-Lets us create an HTML file that our **webpack-dev-server** can serve when we fire up the workflow. Add an *index.html* file to the build folder and put something like this in it:
+Let us create an HTML file that our **webpack-dev-server** can serve when we fire up the workflow. Add an *index.html* file to the build folder and put something like this in it:
 
 {% highlight html %}
 <!DOCTYPE html>
