@@ -616,7 +616,8 @@ module.exports = {
     loaders: {
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       
-      // Any png-image or woff-font below or equal to 100K will be converted to inline base64 instead
+      // Any png-image or woff-font below or equal to 100K will be converted 
+      // to inline base64 instead
       { test: /\.(png|woff)$/, loader: 'url-loader?limit=100000' }
     }
   }
