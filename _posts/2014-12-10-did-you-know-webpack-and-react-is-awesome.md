@@ -348,14 +348,14 @@ var resolveRoute = function () {
   // If no hash or hash is '#' we lazy load the Home component
   if (!location.hash || location.hash.length === 1) {
     require.ensure([], function () {
-      var Home = require('./Home');
+      var Home = require('./Home.js');
       React.render(Home(), document.getElementById('app'));
     });
     
   // Or if route is #admin we lazy load that
   } else if (location.hash === '#admin') {
     require.ensure([], function () {
-      var Admin = require('./Admin');
+      var Admin = require('./Admin.js');
       React.render(Admin(), document.getElementById('app'));
     });
   }
@@ -525,13 +525,13 @@ var resolveRoute = function () {
   
   if (!location.hash || location.hash.length === 1) {
     require.ensure([], function () {
-      var Home = require('./Home');
+      var Home = require('./Home.js');
       React.render(Home(), document.getElementById('app'));
     });
     
   } else if (location.hash === '#admin') {
     require.ensure([], function () {
-      var Admin = require('./Admin');
+      var Admin = require('./Admin.js');
       React.render(Admin(), document.getElementById('app'));
     });
   }
