@@ -569,8 +569,9 @@ module.exports = {
   module: {
     loaders: {
     
-      // Adding a loader for css. To do this with less you download the less-loader and add it to the end of
-      // the load string here, and of course test for less files, not css
+      // Adding a loader for css. To do this with less you download the 
+      // less-loader and add it to the end of the load string here, and 
+      // of course test for less files, not css
       { test: /\.css$/, loader: 'style-loader!css-loader' }
     }
   }
