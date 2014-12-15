@@ -148,7 +148,7 @@ Since we changed the configuration we need to stop the **webpack-dev-server** an
 
 <a name="vendors"></a>
 ### Handling vendors
-When you create a bundling process in your workflow you want it to be as fast as possible. In Browserify you would solve this by creating two different bundles, one for vendors and one for your application. The vendors bundle is only bundled once and your application bundle is being watched for changes and rebundled on changes. This strategy does not work with WebPack though, because WebPack can not have two completely separate bundles and allow one of them to require from the other. That does not mean there is no solution. It took me some time to figure this one out, but the solution is quite simple.
+When you create a bundling process in your workflow you want it to be as fast as possible. In Browserify you would solve this by creating two different bundles, one for vendors and one for your application. The vendors bundle is only bundled once and your application bundle is being watched for changes and rebundled when that occurs. This strategy does not work with WebPack though, because WebPack can not have two completely separate bundles and allow one of them to require from the other. That does not mean there is no solution. It took me some time to figure this one out, but the solution is quite simple.
 
 We are going to change things around a bit. Instead of depending on **npm** for our browser vendors, we are going to use [bower](http://bower.io). So go ahead and install bower, `npm install bower -g` and then React JS, `bower install react --save`. Now we have react installed in a *bower_components* folder instead. To add this file to your project, create the following configuration:
 
