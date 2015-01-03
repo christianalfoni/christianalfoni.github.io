@@ -9,7 +9,7 @@ I got into JavaScript about 5 years ago and I have no to very little experience 
 
 > *"When asked what he might do differently if he had to rewrite Java from scratch, James Gosling suggested that he might [do away with class inheritance](http://www.javaworld.com/article/2073649/core-java/why-extends-is-evil.html) and write a [delegation only](http://www.artima.com/intv/gosling34.html) language."* [delegation vs inheritance](http://javascriptweblog.wordpress.com/2010/12/22/delegation-vs-inheritance-in-javascript/)
 
-If you want to know more on this topic please head over to Kyle Simpsons article on [http://davidwalsh.name/javascript-objects](http://davidwalsh.name/javascript-objects) and Eric Elliots talk on Fluent 2014 [https://www.youtube.com/watch?v=lKCCZTUx0sI](https://www.youtube.com/watch?v=lKCCZTUx0sI). The first part of this article will bring up different concepts related to objects in JavaScript, the second part will show how you can use composition and delegation, instead of class inheritance to build objects with JavaScript.
+If you want to know more on this topic please head over to Kyle Simpsons article on [http://davidwalsh.name/javascript-objects](http://davidwalsh.name/javascript-objects) and Eric Elliotts talk on Fluent 2013 [https://www.youtube.com/watch?v=lKCCZTUx0sI](https://www.youtube.com/watch?v=lKCCZTUx0sI). The first part of this article will bring up different concepts related to objects in JavaScript, the second part will show how you can use composition and delegation, instead of class inheritance to build objects with JavaScript.
 
 ### Creating an object
 In any application you would probably like to have more than one instance of an object. You need some kind of construct to create instances of objects that looks and behaves the same. In traditional JavaScript you do that with either a constructor or you can do it with a normal function. With ES6 you get the ability to define a class:
@@ -59,7 +59,7 @@ new MyObjectC(); // {myMethod: function () {}}
 
 Now, these instantiators will create a new myMethod method for each object instance. Unless you have to create hundreds of thousands of objects, adding a new version of the method for each instance will **not** get you into performance issues. I believe you should stick with describing your object as it will look like when instantiated, not create less comprehensable code for performance sake. That said, there are situations where you want to use **delegation**.
 
-When I say delegation I specifically mean that we link one object to an other. The object linked to the object you are instantiating will be able to act on behalf of it. You do this specifically by adding an object on the prototype property of a constructor function. When using the normal function pattern we use the `Object.create` method. With ES6 you just add methods. It has the same effect:
+When I say delegation I specifically mean that we link one object to an other. The object linked to the object you are instantiating will be able to act on behalf of it. You do this by adding an object on the prototype property of a constructor function. When using the normal function pattern we use the `Object.create` method. With ES6 you just add methods. It has the same effect:
 
 {% highlight javascript %}
 // With a constructor
@@ -80,7 +80,7 @@ function MyObjectB () {
 }
 
 var obj = MyObjectB(); // {}
-obj.myMethod(); // Prototype object acts on behalf of obj
+obj.myMethod(); // proto object acts on behalf of obj
 
 // ES6 class
 class MyObjectC {
@@ -178,7 +178,7 @@ class MyObjectC {
 }
 {% endhighlight %}
 
-In this case we are not using delegation, because we actually do create new properties on each instance. Though this increases memory usage and takes a performance hit in its instantiation (copying all properties) it is not as bad as you would think. Every function, object and array are copied by reference. So even though each instance will have their own "on" and "off" property, the actual function they reference is the same on all instances. What is very powerful here though is that we are starting to see composition in action. You could keep adding objects as arguments to Object.assign.
+In this case we are not using delegation, because we actually do create new properties on each instance. Though this increases memory usage and takes a performance hit in its instantiation (copying all properties) it is not as bad as you might think. Every function, object and array are copied by reference. So even though each instance will have their own "on" and "off" property, the actual function they reference is the same on all instances. What is very powerful here though is that we are starting to see composition in action. You could keep adding objects as arguments to Object.assign.
 
 So now we have been playing around with the concept of delegation, and pointed out that it is not really inheritance. You should also have a good idea of why we use the constructor and the power of delegation and that we can achieve the same effect with just a simple function.
 
@@ -222,23 +222,18 @@ MyObjectB().list === MyObjectB().list // false
 As you can see in the object factory pattern the function itself is the instantiating function, there is no constructor function that implicitely gets called whenever you use the new keyword in front of the class, calling it as a function.
 
 #### Privates
-A fantastic feature in JavaScript is closures and you can use those to hide implementation details in your objects. Using the ES6 class syntax this is actually not possible, so this is what you would have to do:
+A fantastic feature in JavaScript is closures and you can use those to hide implementation details in your objects. In ES6 you would have to do that in the constructor definition:
 
 {% highlight javascript %}
 // Class
-let MyObjectA = (function () {
-
-  let myPrivate = 'foo';
-
-  class MyObjectA {
-    getPrivate () {
+class MyObjectA {
+  constructor () {
+    let myPrivate = 'foo';
+    this.getPrivate = function () {
       return myPrivate;
     }
   }
-  
-  return MyObjectA;
-
-}());
+}
 new MyObjectA().getPrivate(); // "foo"
 
 // Object factory
@@ -252,7 +247,7 @@ function MyObjectB (obj = {}) {
 MyObjectB().getPrivate(); // "foo"
 {% endhighlight %}
 
-Sorry about the bad example, but I hope you see that I am just making a point :-) As you can see you actually need to create the class with its own outer scope, in this case an IFFI (Immediately Invoked Function Expression). In the object factory pattern you can just define and use it.
+Sorry about the bad example, but I hope you see that I am just making a point :-) Hiding details in ES6 classes requires you to move methods accessing privates to the inside of the constructor. If not you would have to wrap the class in its own scope, with an IIFE or a module.
 
 #### Adding methods
 {% highlight javascript %}
@@ -278,7 +273,7 @@ function MyObjectB (obj = {}) {
 MyObjectB().getFirstInList() // "foo"
 {% endhighlight %}
 
-There is not much difference in syntax, but the methods added in ES6 classes will not be attached to the instance, but a prototype object created "under the hood", causing delegation. That is initially a good thing, but might also surprise you. The object you are describing will not look like this when console logging it in the browser. There is a hidden feature of the object factory pattern. When using `this` you actually make methods dynamic. What I mean is that you can change the context of the method when it runs:
+There is not much difference in syntax, but the methods added in ES6 classes will not be attached to the instance, but a prototype object created "under the hood", causing delegation. That is initially a good thing, but might also surprise you. The object you are describing will not look like this when console logging it in the browser. There is also a hidden feature of the object factory pattern. When using `this` you actually make methods dynamic. What I mean is that you can change the context of the method when it runs:
 
 {% highlight javascript %}
 function MyObjectB (obj = {}) {
@@ -309,7 +304,7 @@ MyObjectB().getFirstInList.call(someObj); // "foo"
 Since we point to the actual object being built it is not possible to change the context of which it is run.
 
 #### Inheritance
-So a class in ES6 has the possibility to extend from an other class, but not only a specific "class" definition, but actually any constructor and its prototype. It also takes JavaScript to a new level of abstraction. A function, called **super**, knows what method it is being called in and calls that same method on the extended "class" with the current context. "It just works that way, accept it" is not something you are used to in JavaScript.
+So a class in ES6 has the possibility to extend from an other class, but not only a specific "class" definition, but actually any constructor and its prototype. It also takes JavaScript to a new level of abstraction. A function, called **super**. It can be used inside the constructor function to call the extended constructor, which is bound to the object. You can also use **super.someMethod** to call methods on the extended class, that are also bound to the object. "It just works that way, accept it" is not something you are used to in JavaScript.
 
 The challenge with thinking inheritance is that you have to compose in your head how an object actually looks like by looking into different classes AND follow the usage of super, it can get very complex. The classes also become completely dependant on each other because you do not compose smaller parts, only build on top of existing functionality. [inheritance is evil and must be destroyed](http://berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/).
 
@@ -374,7 +369,7 @@ personA.age; // 18
 var personB = Person({name: 'Roger', age: 30}); // {name: "Roger", age: 30}
 {% endhighlight %}
 
-As you can see, by composing a normal object with a person object we created a delegate. We linked the DEFAULTS object to instantiated person object.
+As you can see, by composing a normal object with a person object we created a delegate. We link the DEFAULTS object to instantiated person objects.
 
 #### Composing constructors and their prototypes
 Most libraries are based on constructors with prototypes. An example of that would be Backbone.Model or EventEmitter. Let us turn our Person into a Backbone Model.
