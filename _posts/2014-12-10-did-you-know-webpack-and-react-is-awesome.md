@@ -25,7 +25,7 @@ This article got pretty long, so here you got some shortcuts in case there is so
 - [Running the workflow](#runningworkflow)
 - [Loaders](#loaders)
 - [Handling vendors](#vendors)
-- [Specifying chunkcs](#chunks)
+- [Specifying chunks](#chunks)
 - [Multiple lazy loaded entries](#lazyload)
 - [Common chunks](#common)
 - [Live reload](#livereload)
@@ -41,6 +41,19 @@ First of all you will need to install both **webpack** and **webpack-dev-server*
 
 <a name="basicworkflow"></a>
 ### Creating a basic workflow
+Our project structure is:
+
+{% highlight console %}
+/project
+- /app
+-- main.js
+-- AppComponent.js
+- /build
+-- index.html
+-- bundle.js (automatically built by webpack)
+- webpack.config.js
+{% endhighlight %}
+
 Just like **grunt** and **gulp** you will need a file defining your setup. This file should by default be called `webpack.config.js` and looks something like this:
 
 {% highlight javascript %}

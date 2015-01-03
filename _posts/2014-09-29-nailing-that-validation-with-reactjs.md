@@ -5,7 +5,7 @@ date:   2014-10-22 09:21:30
 categories: javascript
 tags: ["javascript", "FLUX"]
 ---
-Validation is complex. Validation is extremely complex. I think it is right up there at the top of implementations we misjudge regarding complexity. So why is validation so difficult in general? How could we implement this with React JS? And do you get a prize for reading through this article? ... yep, you do! Look forward to a virtual cookie at the bottom of this article, you will definitaly deserve it ;-)
+Validation is complex. Validation is extremely complex. I think it is right up there at the top of implementations we misjudge regarding complexity. So why is validation so difficult in general? How could we implement this with React JS? And do you get a prize for reading through this article? ... yep, you do! Look forward to a virtual cookie at the bottom of this article, you will definitely deserve it ;-)
 
 At my employer, Gloppen EDB Lag, we are building a React JS component framework for application development. We have everything from grids and panels to calendars and forms. Think of it as [React Bootstrap](http://react-bootstrap.github.io/), but with bigger parts specific to our applications. So we have lots of forms in our applications and we needed a form that could handle both user input validation, server validation and be very flexible with the contents of the form.
 
