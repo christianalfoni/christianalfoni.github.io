@@ -632,7 +632,7 @@ var Input = React.createClass({
       // When the value changes, wait for it to propagate and
       // then validate the input
     }, function () {
-      this.validate(this);
+      this.props.validate(this);
     }.bind(this));
   },
   render: function () {
