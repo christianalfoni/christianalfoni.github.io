@@ -187,7 +187,7 @@ module.exports = {
   module: {
   
     // There is no reason for WebPack to parse this file
-    noParse: [/^react$/],
+    noParse: [bower_dir + '/react/react.min.js'],
     loaders: {
       { test: /\.js$/, loader: 'jsx-loader' }
     }
@@ -206,7 +206,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
   addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp('^' + name + '$');
+    this.module.noParse.push(new RegExp(path);
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
@@ -235,7 +235,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
   addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp('^' + name + '$');
+    this.module.noParse.push(new RegExp(path);
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
@@ -338,11 +338,7 @@ Okay, lets dive into one of the really cool parts of WebPack. Lets say you are b
 
 {% highlight javascript %}
 module.exports = {
-  entry: {
-    app: ['./app/main.js'],
-    Home: ['./app/Home.js'],
-    Admin: ['./app/Admin.js']
-  },
+  entry: ['./app/main.js'],
   output: {
     path: './build',
     filename: 'bundle.js'
@@ -406,11 +402,7 @@ If you follow along on the network tab of the web console you will see network r
 
 {% highlight javascript %}
 module.exports = {
-  entry: {
-    app: ['./app/main.js'],
-    Home: ['./app/Home.js'],
-    Admin: ['./app/Admin.js']
-  },
+  entry: ['./app/main.js'],
   output: {
     path: './build',
     filename: 'bundle.js',
@@ -428,43 +420,18 @@ So what if both our *Home.js* file and our *Admin.js* required a third file, *Sh
 {% highlight javascript %}
 var webpack = require('webpack');
 module.exports = {
-  entry: {
-    app: ['./app/main.js'],
-    Home: ['./app/Home.js'],
-    Admin: ['./app/Admin.js']
-  },
+  entry: ['./app/main.js'],
   output: {
     path: './build',
     filename: 'bundle.js'
   },
-  plugins: [new webpack.optimize.CommonChunkPlugin('common.js', 2)]
+  plugins: [new webpack.optimize.CommonChunkPlugin('main', null, false)]
 };
 {% endhighlight %}
 
-We create a **CommonChunkPlugin** and pass two arguments. The first argument is the name of the file we are downloading to load the chunk. The second argument is the minimum of entry points (currently 3 entry points now) should require a module before it is put into the common chunk. Since only **Home** and **Admin** requires it we set the number 2. By default WebPack only moves a module to the common chunk if all entry points require the module. 
+We create a **CommonChunkPlugin** and pass three arguments. The first argument refers to what entry point we want to put the shared code. The default entry point name is "main", which points to ['./app/main.js']. The second argument would be the name of the file, that holds the shared code, but since we already have an output for our main entry point (bundle.js) we leave it at null. The third argument tells webpack to look for common modules in our lazely required modules. There is actually a fourth argument here too which is a number. The number states how many of these lazy modules that needs to share a module before it is put into our main bundle.
 
-An important note here is that the entry point file (main.js, Home.js or Admin.js) itself does not have to require the common module, any dependency within the entry point will count. An example of this would be if *Home.js* required a module named *InnerHome.js* and *InnerHome.js* required our *Shared.js* module. The *Shared.js* module would still be included in the common chunk.
-
-Okay good, so let us update the *index.html* file:
-
-{% highlight html %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My project</title>
-</head>
-<body>
-  <div>
-    <a href="#">Home</a>
-    <a href="#admin">Admin</a>
-  </div>
-  <div id="app"></div>
-  <script src="common.js"></script>
-  <script src="bundle.js"></script>
-</body>
-</html>
-{% endhighlight %}
+An important note here is that the entry point file (main.js, Home.js or Admin.js) itself does not have to require the common module, any dependency within the entry point will count. An example of this would be if *Home.js* required a module named *InnerHome.js* and *InnerHome.js* required our *Shared.js* module. The *Shared.js* module would still be included in main bundle.
 
 <a name="livereload"></a>
 ### Live reload
