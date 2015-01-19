@@ -64,9 +64,7 @@ var browserifyTask = function (options) {
 
 	/* We set our dependencies as externals of our app bundler.
      For some reason it does not work to set these in the options above */
-	(options.development ? dependencies : []).forEach(function (dep) {
-		appBundler.external(dep);
-	});
+  appBundler.external(options.development ? dependencies : []);
   
   /* This is the actual rebundle process of our application bundle. It produces
     a "main.js" file in our "build" folder. */
@@ -109,9 +107,7 @@ var browserifyTask = function (options) {
     });
 
     // Again we tell this bundle about our external dependencies
-    dependencies.forEach(function (dep) {
-      testBundler.external(dep);
-    });
+    testBundler.external(dependencies);
 
     /* Now this is the actual bundle process that ends up in a "specs.js" file
       in our "build" folder */
