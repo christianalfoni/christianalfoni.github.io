@@ -8,7 +8,7 @@ tags: ["javascript", "angularjs", "flux"]
 
 After writing [my initial article about Angular JS and FLUX](http://www.christianalfoni.com/javascript/2014/09/25/using-flux-with-angular.html) I worked on bringing the experiences I had building [www.jsfridge.com](http://www.jsfridge.com) with [jFlux](http://www.jflux.io) to React JS. This also ended up in an article, [My experience building a FLUX application](http://christianalfoni.github.io/javascript/2014/10/27/my-experiences-building-a-flux-application.html).
 
-Shortly after I watched the [ng-conf Misko talk](https://www.youtube.com/watch?v=lGdnh8QSPPk) and I was both surprised and happy to see that Google will embrace FLUX in Angular 2.0. How exactly is yet to see, but it left me with some thoughts on how to use FLUX with Angular JS. So I wanted to write an article that brings up the concepts, the challenges with Angular and how you can start using FLUX in Angular JS today using [flux-angular](https://github.com/christianalfoni/flux-angular).
+So now, with some more experience, I thought it could be a good idea to write an article that brings up the concepts, the challenges with Angular and how you can start using FLUX in Angular JS with [flux-angular](https://github.com/christianalfoni/flux-angular).
 
 You can have a look at a [fiddle](http://www.jsfridge.com/fiddles/1414929331028) over at JSFridge if you want to. It is a small TODO-app with API implementation. Keep reading to explore how we make Angular JS work with FLUX.
 
