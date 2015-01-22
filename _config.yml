@@ -1,3 +1,6 @@
 name: christianalfoni
+description: Webapp Enthusiast
+url: www.christianalfoni.com
 markdown: redcarpet
 pygments: true
+indent: 2
