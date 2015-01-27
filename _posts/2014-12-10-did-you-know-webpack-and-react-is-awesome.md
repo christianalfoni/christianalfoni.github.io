@@ -129,9 +129,9 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 {% endhighlight %}
@@ -188,9 +188,9 @@ module.exports = {
   
     // There is no reason for WebPack to parse this file
     noParse: [bower_dir + '/react/react.min.js'],
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 {% endhighlight %}
@@ -216,9 +216,9 @@ var config = {
   },
   module: {
     noParse: [],
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 
@@ -245,9 +245,9 @@ var config = {
   },
   module: {
     noParse: [],
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 
@@ -303,9 +303,9 @@ var config = {
   },
   module: {
     noParse: [],
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 
@@ -547,13 +547,13 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: {
+    loaders: [
     
       // Adding a loader for css. To do this with less you download the 
       // less-loader and add it to the end of the load string here, and 
       // of course test for less files, not css
       { test: /\.css$/, loader: 'style-loader!css-loader' }
-    }
+    ]
   }
 };
 {% endhighlight %}
@@ -593,13 +593,13 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: {
+    loaders: [
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       
       // Any png-image or woff-font below or equal to 100K will be converted 
       // to inline base64 instead
       { test: /\.(png|woff)$/, loader: 'url-loader?limit=100000' }
-    }
+    ]
   }
 };
 {% endhighlight %}
@@ -658,9 +658,9 @@ var config = {
   },
   module: {
     noParse: [],
-    loaders: {
+    loaders: [
       { test: /\.js$/, loader: 'jsx-loader' }
-    }
+    ]
   }
 };
 
