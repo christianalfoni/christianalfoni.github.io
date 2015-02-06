@@ -458,7 +458,7 @@ var React = require('react');
 var stateTree = require('./stateTree.js');
 var AppComponent = require('./AppComponent.js');
 var renderApp = function () {
-  React.render($lt;AppComponent state={stateTree.get()}/&rt;, document.body);
+  React.render(<AppComponent state={stateTree.get()}/>, document.body);
 };
 stateTree.on('update', renderApp);
 renderApp();
