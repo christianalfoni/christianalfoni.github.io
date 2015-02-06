@@ -3,7 +3,7 @@ layout: post
 title:  "Plant a Baobab tree in your flux application"
 date:   2015-02-06 09:21:30
 categories: javascript
-tags: ["javascript"]
+tags: ["javascript", "flux", "baobab"]
 ---
 
 All standards, libraries, practices, architectures and patterns needs some time to evolve before becoming widely accepted. The flux architecture is no different. After Facebook released their React JS project the suggested flux archtecture has evolved into many different shapes and colors. Some of them more accepted than others. In this article we are going to look at what challenges exists today with the flux architecture, which is still evolving and we are going to look at a solution that will at least contribute to the evolution of flux.
