@@ -6,7 +6,7 @@ categories: javascript
 tags: ["javascript", "flux", "baobab"]
 ---
 
-All standards, libraries, practices, architectures and patterns needs some time to evolve before becoming widely accepted. The flux architecture is no different. After Facebook released their React JS project the suggested flux archtecture has evolved into many different shapes and colors. Some of them more accepted than others. In this article we are going to look at what challenges exists today with the flux architecture. We are also going to look at a solution that I think is a great contribution to the evolution of flux.
+All standards, libraries, practices, architectures and patterns needs some time to evolve before becoming widely accepted. The flux architecture is no different. After Facebook released their React JS project the suggested flux architecture has evolved into many different shapes and colors. Some of them more accepted than others. In this article we are going to look at what challenges exists today with the flux architecture. We are also going to look at a solution that I think is a great contribution to the evolution of flux.
 
 ### Flux and Flux history
 If you have never heard about flux before I will give a very short decription. **Component** -> **Action Dispatcher** -> **Store** -> **Component**. It is a one way flow of state where you components do not change the state of your application directly, but goes through a dispatcher to do so. There er several implementations of this architecture and initially we had the offical dispatcher and store from Facebook. So why did developers start to implement their own versions of flux? I believe there are five main reasons for this: **verbosity** , **async operations**, **handle the same action in multiple stores**, **sharing state between stores** and **immutability**.
@@ -18,13 +18,13 @@ Developers in the JavaScript world has become accustomed to very expressive and 
 When you test your application it is better to do so if you can change the state of your store synchronously. The reason is that synchronous tests are easier to write and you will also get less dependencies to the store itself. What you want to test is how your components render in the different states of the store. If the API changing the state of the store is synchrounous it will be easier to prepare the state of the store before running a test.
 
 #### Handle the same action in multiple stores
-Facebook suggests a **waitFor** method that can reference the other stores in your application. If an action is dispatched and multiple stores react to that action, the **waitFor** method allows you to control which stores handles the action first.  Even though you clearly see that something else should happen first, you have no idea exactly what happens. It is much like calling **super** in a constructor. You have to change file and compose in your head how it works.
+Facebook suggests a **waitFor** method that can reference the other stores in your application. If an action is dispatched and multiple stores react to that action, the **waitFor** method allows you to control which stores handles the action first.  Even though you clearly see that something else should happen first, you have no idea exactly what happens. It is much like calling **super** in a constructor. You have to change file and compose how it works in your head.
 
 #### Sharing state between stores
-You probably do not know exactly what state is going to live in the application beforehand, and even less how that state will flow through the application. And if you are a wiz at planning, you can not look into the future, the state and flow will change. The thing with traditional flux is that the state is split into multiple stores and often one store has some state an other store is interested in. That is initially not a problem, but it quickly becomes a problem if two stores depend on each other. You can easily get circular depedencies.
+You probably do not know exactly what state is going to live in the application beforehand, and even less how that state will flow through the application. And if you are a wiz at planning, you can not look into the future. The state and flow will change. The thing with traditional flux is that the state is split into multiple stores and often one store has some state an other store is interested in. That is initially not a problem, but it quickly becomes a problem if two stores depend on each other. You get circular dependencies.
 
 #### Immutability
-Immutability can be a difficult concept to grasp, but a more important question to answer is; "why would you want to use it"? There are two sides to this story. Immutability is a general concept that makes sure that whenever an object or array is changed, the object/array itself will change its reference. This makes sure that one part of your code can not mutate the state of other parts of your code. To my understading this is something that gives value on very large projects, with huge codebases and a large team. Much like type checking. But the other side of this story is related to React JS and its rendering. You can use immtability to allow for shallow comparison when verifying if a render should occur in a component. The **React.addons.update** method, or the full [immutability-js](https://github.com/facebook/immutable-js), will help you do this. The problem is that it is both difficult to use and understand why you need to use it.
+Immutability can be a difficult concept to grasp, but a more important question to answer is; "why would you want to use it"? There are two sides to this story. Immutability is a general concept that makes sure that whenever an object or array is changed, the object/array itself will change its reference. This makes sure that one part of your code can not mutate the state of other parts of your code. To my understading this is something that gives value on very large projects, with huge codebases and a large team. Much like type checking. But the other side of this story is related to React JS and its rendering. You can use immtability to allow for shallow comparison when verifying if a render should occur in a component. The **React.addons.update** method, or the [immutability-js](https://github.com/facebook/immutable-js) lib, will help you do this. The problem is that it is both difficult to use and understand why you need to use it.
 
 ### The solutions
 There are many alternatives out there. Just have a look at [the React JS wiki](https://github.com/facebook/react/wiki/Complementary-Tools). What I think all of them have in common is that they are more expressive in regards of syntax, they are not as verbose as the Facebook dispatcher and store. Some of them handle async operations as a layer in front of the dispatcher, called *action creators*. To handle the same action in multiple stores some libraries have different implementations of waitFor, and some uses mixins to merge stores into one single store. There are not many that handles the circular depdendency issue, but mixins is one solution that will handle that too. Some of them has immutability built in either by update methods to change state, or pure cloning.
@@ -64,7 +64,7 @@ var adminCursor = stateTree.select('admin');
 var admin = adminCursor.get(); // { users: [] }
 {% endhighlight %}
 
-**adminCursor**? What is that? Well, a cursor is a pointer to some data in your tree, in this case the admin object. To actually extract the value you use the **get()** method on the cursor. So what is this all about? The brilliant thing that cursors give you is the ability to listen for changes, but not only changes to that specific branch or value. Let me give you an example:
+**adminCursor**? What is that? Well, a cursor is a pointer to some data in your tree, in this case the admin object. To actually extract the value you use the **get()** method on the cursor. So what is this all about? The brilliant thing that cursors give you is the ability to listen for changes, but not only changes to the value the cursor points to. Let me give you an example:
 
 {% highlight javascript %}
 var Baobab = require('baobab');
@@ -182,7 +182,7 @@ Architecture using traditional flux
 
 {% endhighlight %}
 
-With Baobab you get a bit more freedom. With a Baobab tree you already have an API for changing the state and trigger an update (change) event. In other words, you do not need to create methods to change the state like you would in a store. Also considering that you only have one state tree there is never a dispatch to a sequence of handlers. What I mean by that is that in Facebook flux you can have multiple stores that reacts to the same action dispatch. A **waitFor** method allows you to let other handlers run before the current one. By having one state tree you prevent circular dependencies and you will always have one method describing the intent of a specific action. In my opionion this gives you a better overview of what happens when an action is triggered.
+With Baobab you get a bit more freedom. With a Baobab tree you already have an API for changing the state and trigger an update (change) event. In other words, you do not need to create methods to change the state like you would in a store. Also considering that you only have one state tree there is never a dispatch to a sequence of handlers. What I mean by that is that in Facebook flux you can have multiple stores that reacts to the same action dispatch. A **waitFor** method allows you to let other handlers run before the current one. This is not necessary with a Baobab tree. Also by having one state tree you prevent circular dependencies and you will always have one method describing the intent of a specific action. In my opionion this gives you a better overview of what happens when an action is triggered.
 
 So to compare this with an architecture using Baobab it will look more like this:
 
@@ -251,7 +251,7 @@ var stateTree = new Baobab({
 module.exports = stateTree;
 {% endhighlight %}
 
-In this setup we have chosen to split by models and views, which are our traditional state holders. Anything related to entities are put in the *models* domain space and everything related to UI state is put into *views*. Models might not come to much of a surprise, but maybe views does. The reason you would want to define views is that you probably have many components building up one view. By putting this state into your state tree you ensure that any changes to those components, or the addition of new components, all relate to the tree. Not each other.
+In this setup we have chosen to split by models and views, which are our traditional state concepts in modern web applications. Anything related to entities are put in the *models* domain space and everything related to UI state is put into *views*. Models might not come to much of a surprise, but maybe views does. The reason you would want to define views is that you probably have many components building up one view. By putting this state into your state tree you ensure that any changes to those components, or the addition of new components, all relate to the tree. Not each other.
 
 {% highlight javascript %}
 var Baobab = require('baobab');
@@ -279,12 +279,12 @@ module.exports = stateTree;
 
 A third setup could be just adding state directly to the tree. This would be for smaller applications.
 
-My message here is that there is no specific structure for building state. State structures differs as much as applications differs. But now you have a concept where you do not have to divide your state artifically to avoid circular dependencies, you do not have to use a **waitFor** method that makes your code harder to reason about and you can easily change the structure of your state as your application grows by only refactoring the cursor selectors of your components. That is great!
+My message here is that there is no specific structure for building state. State structures differs as much as applications differs. But now you have a concept where you do not have to divide your state artifically to avoid circular dependencies, you do not have to use a **waitFor** method that makes your code harder to reason about and you can easily change the structure of your state as your application grows. That is great!
 
 ### A bit more complex example
 A process I have become a fan of is boxing in your layout to define components. This is introduced in [Thinking in React](http://facebook.github.io/react/docs/thinking-in-react.html). What I noticed is that you can use this concept to also define your Baobab state tree. Let us use the "Thinking React" example to define the Baobab state tree, but let us also get that data from the server:
 
-[Products](http://facebook.github.io/react/img/blog/thinking-in-react-components.png)
+![Products](http://facebook.github.io/react/img/blog/thinking-in-react-components.png)
 
 *stateTree.js*
 {% highlight javascript %}
