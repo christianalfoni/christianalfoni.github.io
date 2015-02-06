@@ -391,7 +391,7 @@ But if a nested component does a **setState** it will not affect parent componen
                
 {% endhighlight %}
 
-This actually means that if you had one store you could get away with only listening to changes on your root component, triggering a setState and then just grab state from the stores in the nested components.
+This actually means that you could get away with only pointing to the state tree on the root component and then grab state directly from it in all other components, without attaching cursors. The drawback is that the whole application would render on all state changes.
 
 #### 2. Repeated rendering
 What is even more important to understand about **setState** is that using a general change event will not only cause cascaded rendering but will also cause repeated rendering in components. Let me explain:
