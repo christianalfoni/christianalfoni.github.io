@@ -352,7 +352,7 @@ These options does two important things.
 
 1. The PureRenderMixin from React addons will ensure that the component will only render if the props passed to it or its own state has actually changed
 
-2. When Baobab changes a value in the tree it will propagate up and give all objects and arrays new references. The Baobab tree becomes immutable. That way a shallow check by PureRenderMixin is enough to verify that a render is needed. The nice thing is... you do not have to think about it!
+2. When Baobab changes a value in the tree it will propagate up and give all objects and arrays new references. The Baobab tree is immutable in that sense. That way a shallow check by PureRenderMixin is enough to verify that a render is needed. The nice thing is... you do not have to think about it!
 
 So why does this matter? Lets have a look at how React JS renders and you will see what these two options fix.
 
