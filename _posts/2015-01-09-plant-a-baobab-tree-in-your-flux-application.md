@@ -9,10 +9,10 @@ tags: ["javascript", "flux", "baobab"]
 All standards, libraries, practices, architectures and patterns needs some time to evolve before becoming widely accepted. The flux architecture is no different. After Facebook released their React JS project the suggested flux architecture has evolved into many different shapes and colors. Some of them more accepted than others. In this article we are going to look at what challenges exists today with the flux architecture. We are also going to look at a solution that I think is a great contribution to the evolution of flux.
 
 ### Flux and Flux history
-If you have never heard about flux before I will give a very short decription. **Component** -> **Action Dispatcher** -> **Store** -> **Component**. It is a one way flow of state where you components do not change the state of your application directly, but goes through a dispatcher to do so. There er several implementations of this architecture and initially we had the offical dispatcher and store from Facebook. So why did developers start to implement their own versions of flux? I believe there are five main reasons for this: **verbosity** , **async operations**, **handle the same action in multiple stores**, **sharing state between stores** and **immutability**.
+If you have never heard about flux before I will give a very short decription. **Component** -> **Action Dispatcher** -> **Store** -> **Component**. It is a one way flow of state where you components do not change the state of your application directly, but goes through a dispatcher to do so. There are several implementations of this architecture and initially we had the offical dispatcher and store from Facebook. So why did developers start to implement their own versions of flux? I believe there are five main reasons for this: **verbosity** , **async operations**, **handle the same action in multiple stores**, **sharing state between stores** and **immutability**.
 
 #### Verbosity
-Developers in the JavaScript world has become accustomed to very expressive and easy to use API's. The Facebook dispatcher and store does not really provide much of an API at all, there is a lot of manual checking and defining to do very simple things. It also becomes quite repetetive. 
+Developers in the JavaScript world have become accustomed to very expressive and easy to use API's. The Facebook dispatcher and store does not really provide much of an API at all, there is a lot of manual checking and defining to do very simple things. It also becomes quite repetitive. 
 
 #### Async operations
 When you test your application it is better to do so if you can change the state of your store synchronously. The reason is that synchronous tests are easier to write and you will also get less dependencies to the store itself. What you want to test is how your components render in the different states of the store. If the API changing the state of the store is synchrounous it will be easier to prepare the state of the store before running a test.
@@ -27,7 +27,7 @@ You probably do not know exactly what state is going to live in the application 
 Immutability can be a difficult concept to grasp, but a more important question to answer is; "why would you want to use it"? There are two sides to this story. Immutability is a general concept that makes sure that whenever an object or array is changed, the object/array itself will change its reference. This makes sure that one part of your code can not mutate the state of other parts of your code. To my understading this is something that gives value on very large projects, with huge codebases and a large team. Much like type checking. But the other side of this story is related to React JS and its rendering. You can use immtability to allow for shallow comparison when verifying if a render should occur in a component. The **React.addons.update** method, or the [immutability-js](https://github.com/facebook/immutable-js) lib, will help you do this. The problem is that it is both difficult to use and understand why you need to use it.
 
 ### The solutions
-There are many alternatives out there. Just have a look at [the React JS wiki](https://github.com/facebook/react/wiki/Complementary-Tools). What I think all of them have in common is that they are more expressive in regards of syntax, they are not as verbose as the Facebook dispatcher and store. Some of them handle async operations as a layer in front of the dispatcher, called *action creators*. To handle the same action in multiple stores some libraries have different implementations of waitFor, and some uses mixins to merge stores into one single store. There are not many that handles the circular depdendency issue, but mixins is one solution that will handle that too. Some of them has immutability built in either by update methods to change state, or pure cloning.
+There are many alternatives out there. Just have a look at [the React JS wiki](https://github.com/facebook/react/wiki/Complementary-Tools). What I think all of them have in common is that they are more expressive in regards of syntax, they are not as verbose as the Facebook dispatcher and store. Some of them handle async operations as a layer in front of the dispatcher, called *action creators*. To handle the same action in multiple stores some libraries have different implementations of waitFor, and some uses mixins to merge stores into one single store. There are not many that handle the circular depdendency issue, but mixins is one solution that will handle that too. Some of them has immutability built in either by update methods to change state, or pure cloning.
 
 So now we have some background on what challenges flux has and what still needs to be evolved until we reach a widely accepted implementation... if we ever get there, or should for that matter :-) Now we are going to look at one specific implementation that I think solves all these issues very elegantly.
 
@@ -95,7 +95,7 @@ feedsCursor.on('update', function () {
   console.log('I saw a change'); // I will not trigger because I am on a different branch
 });
 
-notificationsCursor.select('isLoading').set(true);
+notificationsCursor.push('foo');
 
 {% endhighlight %}
 
@@ -327,7 +327,7 @@ Thats it! We have pretty much created a "backend" for our components. An API our
 {% highlight javascript %}
 var stateTree = require('./stateTree');
 window.addEventListener("beforeunload", function(e){
-   localStorage.state = JSON.stringify(stateTree.get());
+   localStorage.state = JSON.stringify(stateTree);
 }, false);
 {% endhighlight %}
 
