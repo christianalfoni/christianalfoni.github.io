@@ -73,7 +73,7 @@ Now we are first triggering a change to notify our components that the store is 
 </div>
 {% endhighlight %}
 
-We want the input inside **&lt;AddTodoComponent/&gt;** to disable itself while the store is in **isSaving** state. It does that by listening to a change event in the store. In addition to this we also want our **TodosListComponent** to update itself when there are changes to the todos array and we of course listen to the same change event to accomplish that. So what happens is the following:
+We want the input inside **&lt;AddTodoComponent/&gt;** to disable itself while the store is in **isSaving** state. It does that by listening to a change event in the store. In addition to this we also want our **&lt;TodosListComponent/&gt;** to update itself when there are changes to the todos array and we of course listen to the same change event to accomplish that. So what happens is the following:
 
 1. We grab both **isSaving** and **todos** when components are created
 2. We add a new todo causing a "change" event to occur
