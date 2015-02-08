@@ -73,12 +73,12 @@ Now we are first triggering a change to notify our components that the store is 
 </div>
 {% endhighlight %}
 
-We want the input inside **AddTodoComponent** to disable itself while the store is in **isSaving** state. It does that by listening to a change event in the store. In addition to this we also want our **TodosListComponent** to update itself when there are changes to the todos array and we of course listen to the same change event to accomplish that. So what happens is the following:
+We want the input inside **&lt;AddTodoComponent/&gt;** to disable itself while the store is in **isSaving** state. It does that by listening to a change event in the store. In addition to this we also want our **TodosListComponent** to update itself when there are changes to the todos array and we of course listen to the same change event to accomplish that. So what happens is the following:
 
 1. We grab both **isSaving** and **todos** when components are created
 2. We add a new todo causing a "change" event to occur
-3. The **AddTodoComponent** grabs the new **isSaving** state and the **TodosListComponent** grabs the mutated **todos** state
-4. When the async operation is done we trigger a new change event causing again our two components to grab the same states, though the **AddTodoComponent** did not really have to, since there were no mutation on the todos array
+3. The **&lt;AddTodoComponent/&gt;** grabs the new **isSaving** state and the **&lt;TodosListComponent/&gt;** grabs the mutated **todos** state
+4. When the async operation is done we trigger a new change event causing again our two components to grab the same states, though the **&lt;TodosListComponent/&gt;** did not really have to, since there were no mutation on the todos array
 
 But this is not the only challenge with React JS rendering. Lets look at a couple of other things, but remember this when we look at EventEmitter2.
 
