@@ -278,10 +278,13 @@ Now lets have a look at how we can use a different rendering strategy to control
 {% highlight javascript %}
 var TodosListComponent = React.createClass({
   componentWillMount: function () {
-    AppStore.on('todos.*', this.setState);
+    AppStore.on('todos.*', this.update);
   },
   componentWillUnmount: function () {
-    AppStore.off('todos.*', this.setState);
+    AppStore.off('todos.*', this.update);
+  },
+  update: function () {
+    this.setState({});
   },
   render: function () {
     return (
@@ -357,15 +360,20 @@ Although we have given more specific behavior to our components they will still 
 var TodosListComponent = React.createClass({
   mixins: [flux.RenderMixin],
   componentWillMount: function () {
-    AppStore.on('todos.*', this.update);
+    AppStore.on('todos.*', this.updateState);
   },
   componentWillUnmount: function () {
-    AppStore.off('todos.*', this.update);
+    AppStore.off('todos.*', this.updateState);
+  },
+  updateState: function () {
+    this.setState({
+      todos: AppStore.getTodos()
+    });
   },
   render: function () {
     return (
       <ul>
-        {AppStore.getTodos().map(function (todo) {
+        {this.state.map(function (todo) {
           return <li>{todo.title}</li>
         })}
       </ul>
@@ -374,7 +382,7 @@ var TodosListComponent = React.createClass({
 });
 {% endhighlight %}
 
-The mixin will prevent the component from rerendering if there are no props passed to it or the props are the same as current props. This means that if the parent component of **TodosListComponent** would run **setState** this component would not update itself.
+The mixin will prevent the component from rerendering if the props or the state has not changed. This means that if the parent component of **TodosListComponent** would run **setState** this component would not render, as the todos array is the same.
 
 ### Summary
 So what we have done now is basically going from very loosely defined rerendering of your application to a very strict concept you have full control of. We did this by:
