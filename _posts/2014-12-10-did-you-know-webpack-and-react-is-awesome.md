@@ -76,14 +76,14 @@ I also recommend using a `package.json` file to configure a script that will run
   "version": "0.0.0",
   "main": "app/main.js",
   "scripts": {
-    "dev": "webpack-dev-server --devtool eval --progress --colors"
+    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base build"
   },
   "author": "",
   "license": "ISC"
 }
 {% endhighlight %}
 
-Let us just briefly talk about the script we have added here: `"webpack-dev-server --devtool eval --progress --colors"`. When you run `npm run dev` in your terminal this is what will be executed. It runs **webpack-dev-server** with some arguments. *--devtool eval* will add source urls to your code, which will make sure that any errors point to the right file and line. It is really important that you do it like this. Sourcemapping can be achieved with *--d*, but that is a lot slower. Use that for production if you want sourcemapping. *--progress* and *--colors* will just improve the feedback you get in the terminal when running your workflow.
+Let us just briefly talk about the script we have added here: `"webpack-dev-server --devtool eval --progress --colors"`. When you run `npm run dev` in your terminal this is what will be executed. It runs **webpack-dev-server** with some arguments. *--devtool eval* will add source urls to your code, which will make sure that any errors point to the right file and line. It is really important that you do it like this. Sourcemapping can be achieved with *--d*, but that is a lot slower. Use that for production if you want sourcemapping. *--progress* and *--colors* will just improve the feedback you get in the terminal when running your workflow. **--content-base build** points to where you have your custom *index.html* located.
 
 <a name="runningworkflow"></a>
 ### Running the workflow
