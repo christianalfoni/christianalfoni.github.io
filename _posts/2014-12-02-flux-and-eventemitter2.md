@@ -119,15 +119,6 @@ But if a nested component does a **setState** it will not affect parent componen
 
 This actually means that if you had one store you could get away with only listening to changes on your root component, triggering a setState and then just grab state from the stores in the nested components. We can create an example of this with our TodoApp:
 
-{% highlight html %}
-<TodoApp>
-  <AddTodoComponent/>
-  <TodosListComponent/>
-</TodoApp>
-{% endhighlight %}
-
-Lets look at our TodoApp component:
-
 {% highlight javascript %}
 var TodoApp = React.createClass({
   componentWillMount: function () {
