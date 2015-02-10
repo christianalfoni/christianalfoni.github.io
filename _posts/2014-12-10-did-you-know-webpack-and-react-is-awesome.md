@@ -672,4 +672,4 @@ module.exports = config;
 And thats it. Your application is ready!
 
 ### Summary
-WebPack is just an awesome tool. It takes application bundling to a whole new level. It is really too bad that documentation is lacking. Hopefully this article gave you some insight into what makes WebPack great. Have a look at [this simple example](https://github.com/christianalfoni/webpack-example) that lets you enjoy all the functionality mentioned in this article.
+WebPack is just an awesome tool. It takes application bundling to a whole new level. It is really too bad that documentation is lacking. Hopefully this article gave you some insight into what makes WebPack great. Have a look at [this simple example](https://github.com/christianalfoni/webpack-example) that lets you enjoy all the functionality mentioned in this article. Also take a look at this webpack react cookbook @bebraw and I am working on: [webpack-react-cookbook](https://github.com/christianalfoni/react-webpack-cookbook).
