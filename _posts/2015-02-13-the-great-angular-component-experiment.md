@@ -123,7 +123,9 @@ var MyComponent = React.createClass({
 
 #### Props (attributes)
 {% highlight html %}
+{% raw %}
 <my-component showMessage="{{true}}" message="Passing props to a component"></my-component>
+{% endraw %}
 {% endhighlight %}
 
 And our component:
