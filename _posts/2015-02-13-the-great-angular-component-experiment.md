@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The great Angular component experiment"
-date:   2015-02-06 09:21:30
+date:   2015-02-22 09:21:30
 categories: javascript
 tags: ["angular", "components", "react", "flux"]
 ---
@@ -10,32 +10,32 @@ My last months has been heavily devoted to understanding React JS and FLUX patte
 
 So I got this idea. What if I did an experiment. What if I found a way to make Angular use components heavyily inspired by React JS, and to boot, a strong FLUX pattern. Would the typical Angular developer see the benefits of React JS and FLUX? And even more interesting, could React JS and FLUX learn something from Angular?
 
-## Enforcing the experiment
+### Enforcing the experiment
 If you are an Angular developer you probably already know that the Angular team is encouraging you to use directives as a component concept, preparing you for the next versions of Angular where they will indeed use components. If not, read [this article](http://teropa.info/blog/2014/10/24/how-ive-improved-my-angular-apps-by-banning-ng-controller.html). You can also see an introduction to components in Angular 2 [here](https://www.youtube.com/watch?v=uD6Okha_Yj0).
 
 React JS will have a huge impact on the JavaScript community, it already has really. It is not just a View layer for writing DOM. It is a generic JavaScript component concept that can be used to render anything. Canvas, WebGL, Gibbons (netflix TV platform), iOS native, Android native etc. FLUX on the other hand is a pattern for handling state. In my opinion it is currently evolving in the direction of being a single state store you "inject" into your main application component. This single injected state store and React JS allows you to render the whole application server side in an initial state and deliver it over the wire, where React JS takes over. It does not matter what UI technology is underneath, as what you send over the wire are the calculated operations needed to put your app in the correct state. That being an HTML string or a data structure for a native layer.
 
 So to sum up. I want to bring React JS and FLUX concepts into Angular so that you can see the benefits in an environment an Angular developer can more easily relate to. It is also interesting to see how concepts in Angular actually merges quite well with FLUX. Maybe FLUX could take some inspiration from Angular? Last but not least I have been working on [flux-angular](https://github.com/christianalfoni/flux-angular) which could benefit from using the evolved FLUX pattern introduced here. Follow that discussion on [this issue](https://github.com/christianalfoni/flux-angular/issues/19).
 
-## Nailing the concepts
+### Nailing the concepts
 First we have to settle on the concepts. At no surprise we will of course have a **component** concept. It will look a lot like a React JS component. But we also need the FLUX parts. Since Facebook released information on how they implement FLUX it has evolved quite a bit. I wrote an article about [Baobab](http://christianalfoni.github.io/javascript/2015/02/06/plant-a-baobab-tree-in-your-flux-application.html) which is a single event emitting and semi-immutable state tree. I will take those concepts and bring it into the experiment. This specifically results in an **actions** concept and a **store** concept.
 
 You can play around with the experiment, try out the syntax and build something by going to [this repo](https://github.com/christianalfoni/the-angular-experiment). I encourage you to try it out, get into the mindset of components and FLUX. I promise it will at least give you inspiration on how you think about building applications. The demo application is the todomvc.com todo application.
 
-## The requirements
+### The requirements
 There are a couple of things that Angular fundementally does differently, which we have to find a way to handle.
 
-### Immutability
+#### Immutability
 There is one very important part we have to handle to make this experiement work. Completely immutable state in the store. So what does that mean? And why do we need it? Immutability, in this context, means that neither your or Angular can change objects and arrays located in the stores directly. This solves two things. First of all it prevents Angulars two-way-databinding to interfere with our application state. With a FLUX pattern we need full control of state flow. Secondly it prevents Angular from changing application state with e.g. hashes in ng-repeat and yourself from making changes that will affect other parts of your application using the same state. 
 
 The before mentioned Baobab is only semi-immutable, meaning that a change in the tree will indeed change references, but the state grabbed from the store can still be mutated and affected by other parts of your code. So what to do? 
 
 I started looking at [Freezer](https://github.com/arqex/freezer), which is a great project. Freezer is the same concept as Baobab, a state tree, but at the same time is completely immutable. Whenever you do a change to the state tree, you get a completely new state tree. Though the concepts are great I met a couple of issues, so I decided to create my own [immutable-store](https://github.com/christianalfoni/immutable-store). It is running under the hood of this implementation and gives a very simpe API to change the state of your application, without allowing Angular or components interfere with that state. In other words, your app and UI state gets very predictable.
 
-### Monkeypatching
+#### Monkeypatching
 For this experiement to work it has to look like something the Angular team could have come up with themselves, if they had a split Google/Facebook personality :-) This means we will add three new methods to Angular modules, in addition to the existing controller, directive, factory, service etc. Those methods are: **component**, **actions** and **store**.
 
-## Lets implement!
+### Lets implement!
 So first of all we need our component. Let me just throw the code down there and then we will go through some concepts:
 
 {% highlight javascript %}
@@ -67,7 +67,7 @@ Using this component would look like this:
 
 What we have basically done here is wrap the generic and powerful directive concept into a component specific concept, inspired by React JS. Let us explore this component a bit more.
 
-### Changing internal state
+#### Changing internal state
 To change the state of the component you can define a method, call it and just change the state. When changing the state of the component you do want it to render again. Two-way-databinding is powerful in that sense. With React JS you would have to specifically tell the component to update with a method. Take a look at the this example:
 
 {% highlight javascript %}
@@ -117,7 +117,7 @@ var MyComponent = React.createClass({
 });
 {% endhighlight %}
 
-### Props (attributes)
+#### Props (attributes)
 {% highlight html %}
 <my-component showMessage="{{true}}" message="Passing props to a component"></my-component>
 {% endhighlight %}
@@ -194,7 +194,7 @@ var MyComponent = React.createClass({
 
 So this shows you clearly that React JS is "JavaScript first". You solve dynamic behavior of your UI using traditional JavaScript, not HTML attributes. This is also partly the reason why React JS is so fast.
 
-### Building a small app
+#### Building a small app
 So now we have begun to look into how a component works. Now let us see why components are great! Let us create, yes, a todo application. What we need first is our main app component. I will be writing the HTML inside the components, which you would do with React JS. I hope this will show you why it is a good idea to have your tightly connected HTML with the component logic. I will be using ES6 multiline string to write the HTML. This is to give you an impression of how it would look like using React JS where you actually would write HTML (JSX).
 
 {% highlight javascript %}
@@ -290,7 +290,7 @@ angular.module('TodoMVC', ['experiment'])
 
 So now you see how we think very differently than one would traditionally with Angular. We are thinking each part of our application as a very focused and isolated component, instead of thinking our application as a piece of HTML and adding behavior to it. It is more JavaScript first, than HTML first. Our render methods are returning a UI tree description which happens to be HTML. If we used React JS it would use this render method several times to figure out if the returned tree had changed. When changes are detected a specific operation to sync that change with the actual UI layer would be triggered. This is not possible with Angular of course, but now you start to see why React JS is so extremely fast.
 
-## Store
+### Store
 So what about our todos? Where do we want to put them? In traditional Angular you would probably put them into a controller, or maybe a service if you are thinking scalability. We are going to use a concept called a store. A store holds some state for a section of your application and acts like a branch on the application state tree. This allows you to access any state anywhere in your application and you can prepare all the state on your server on the initial load. Just put it into the application state tree and you are ready to go. 
 
 Think of the state tree as the puppet master of your application, and the components as puppets. You should be able to force any UI state in your application just by changing properties in the state tree.
@@ -331,7 +331,7 @@ angular.module('TodoMVC', ['experiment'])
 
 As we learned each component in the ng-repeat will have **todo** and **$index** attached to it. This means that the todo is available inside the **todo-item** component.
 
-## Actions
+### Actions
 So lets look at how we would change the state of our store. In this experiment we are exposing a new method on the angular module called **actions**. It is pretty much just a factory:
 
 {% highlight javascript %}
@@ -417,7 +417,7 @@ angular.module('TodoMVC', ['experiment'])
 
 So there we have it. Our application using components and an immutable state tree.
 
-## Summary
+### Summary
 If you are an Angular developer I hope this little experiment gave you some insight into why React JS developers loves thinking components. Angular 2 will have a very similar component concept, though they will still rely on templates. At least as of now. In my opinion that is really too bad, as one of the really good parts of the React JS component concept is to have state and UI logic in one and the same file. That said, maybe Angular has a different "audience" target. It is of course easier for a team with split HTML/CSS knowledge and JavaScript knowledge to build Angular apps, but as the complexity of web applications will just increase I think a pure HTML/CSS developer will be a thing of the past. Hopefully Angular 2 will allow JSX, or at least something similar.
 
 If you know a bit about React JS and specifically FLUX it is interesting to look at Angulars $rootScope. How you can "inject" state at the top of your application and make it available to all components. This is something React JS is not able to do. You have to pass that "root state" as properties down through your components, making them very dependant on each other. The challenge with bringing a "scope concept" into React JS though is that you might have a parent component that depends on one kind of state, and a child component depending on something else. Since rendering a component is determined by a change in the dependent state you would get into situations where the child would not update, due to the parents dependent state did not change, only the childs. Hopefully some very smart people at Facebook is working on this :-)
