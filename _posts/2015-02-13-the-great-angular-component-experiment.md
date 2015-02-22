@@ -248,7 +248,7 @@ angular.module('TodoMVC', ['experiment'])
       },
       render: function () {
         return `
-          <form ng-submit="createTodo()>
+          <form ng-submit="createTodo()">
             <input ng-model="title"/>
           </form>
         `;
@@ -405,7 +405,7 @@ angular.module('TodoMVC', ['experiment'])
       },
       render: function () {
         return `
-          <form ng-submit="createTodo()>
+          <form ng-submit="createTodo()">
             <input ng-model="title"/>
           </form>
         `;
@@ -442,7 +442,7 @@ angular.module('TodoMVC', ['experiment'])
 So there we have it. Our application using components and an immutable state tree.
 
 ### Summary
-If you are an Angular developer I hope this little experiment gave you some insight into why React JS developers loves thinking components. Angular 2 will have a very similar component concept, though they will still rely on templates. At least as of now. In my opinion that is really too bad, as one of the really good parts of the React JS component concept is to have state and UI logic in one and the same file. That said, maybe Angular has a different "audience" target. It is of course easier for a team with split HTML/CSS knowledge and JavaScript knowledge to build Angular apps, but as the complexity of web applications will just increase I think a pure HTML/CSS developer will be a thing of the past. Hopefully Angular 2 will allow JSX, or at least something similar.
+If you are an Angular developer I hope this little experiment gave you some insight into why React JS developers loves thinking components. Angular 2 will have a very similar component concept, though they will still rely on templates. In my opinion you are missing out on one of the really good parts of components. Having UI logic and description in one and the same file is a very powerful concept. That said, maybe Angular has a different "audience" target. It is of course easier for a team with split HTML/CSS knowledge and JavaScript knowledge to build Angular apps. But as the complexity of web applications will just increase I think a pure HTML/CSS developer will be a thing of the past. Hopefully Angular 2 will allow JSX, or at least something similar.
 
 If you know a bit about React JS and specifically FLUX it is interesting to look at Angulars $rootScope. How you can "inject" state at the top of your application and make it available to all components. This is something React JS is not able to do. You have to pass that "root state" as properties down through your components, making them very dependant on each other. The challenge with bringing a "scope concept" into React JS though is that you might have a parent component that depends on one kind of state, and a child component depending on something else. Since rendering a component is determined by a change in the dependent state you would get into situations where the child would not update, due to the parents dependent state did not change, only the childs. Hopefully some very smart people at Facebook is working on this :-)
 
