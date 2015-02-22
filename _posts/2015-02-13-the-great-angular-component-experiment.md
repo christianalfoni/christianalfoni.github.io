@@ -39,6 +39,7 @@ For this experiement to work it has to look like something the Angular team coul
 So first of all we need our component. Let me just throw the code down there and then we will go through some concepts:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('app', ['experiment'])
   .component('myComponent', function () {
     return {
@@ -57,6 +58,7 @@ angular.module('app', ['experiment'])
       }
     };
   })
+{% endraw %}
 {% endhighlight %}
 
 Using this component would look like this:
@@ -71,6 +73,7 @@ What we have basically done here is wrap the generic and powerful directive conc
 To change the state of the component you can define a method, call it and just change the state. When changing the state of the component you do want it to render again. Two-way-databinding is powerful in that sense. With React JS you would have to specifically tell the component to update with a method. Take a look at the this example:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('app', ['experiment'])
   .component('myComponent', function () {
     return {
@@ -89,6 +92,7 @@ angular.module('app', ['experiment'])
       }
     };
   })
+{% endraw %}
 {% endhighlight %}
 
 And with React JS:
@@ -125,6 +129,7 @@ var MyComponent = React.createClass({
 And our component:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('app', ['experiment'])
   .component('myComponent', function () {
     return {
@@ -135,6 +140,7 @@ angular.module('app', ['experiment'])
       }
     };
   })
+{% endraw %}
 {% endhighlight %}
 
 So we have the well known attributes concept here, but it works a bit differently. In React JS we call these attributes props and they are normal JavaScript expressions passed to the component. Angular requires you to hardwire this relationship with a "scope" definition in a directive. It is very confusing that some attributes are evaluated as JavaScript and some are not. In my opinion it is better to define this when passing the attribute, not receviving it. Now you clearly see what is JavaScript and what is just a string.
@@ -142,6 +148,7 @@ So we have the well known attributes concept here, but it works a bit differentl
 But where is **logMessage()** defined? This is where things start to become a bit interesting. The properties you add to your components in this experiement are attached to the scope of the component. The component pretty much IS what you earlier thought of as $scope. Now scope in Angular is actually a really cool concept. It creates a decoupled relationship between the components. What this means in practice is that if some component used **myComponent** defined above the component would only need to define a **logMessage** method and it could be used. Let me show you:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('app', ['experiment'])
   .component('myParent', function () {
     logMessage: function (message) {
@@ -162,6 +169,7 @@ angular.module('app', ['experiment'])
       }
     };
   })
+{% endraw %}
 {% endhighlight %}
 
 What is not so good about this is that it is harder to reason about how the **logMessage** method is being called. I would prefer passing the function as a prop just like React JS, but that is not possible with Angular without the reverted hard wiring we want to avoid.
@@ -261,6 +269,7 @@ angular.module('TodoMVC', ['experiment'])
 And now lets create a component for each todo. Again, we see how the scope helps us create a relationship between parent and child components. Angular implicitly creates a scope for each **todoItem** component, think of it as Angular pre-attaching **todo** and **$index** to the **todoItem** component. So we can just start using it:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('TodoMVC', ['experiment'])
   .component('todoMvc', function () { ... })
   .component('todoCreator', function () { ... })
@@ -286,6 +295,7 @@ angular.module('TodoMVC', ['experiment'])
       };
     };
   });
+{% endraw %}
 {% endhighlight %}
 
 So now you see how we think very differently than one would traditionally with Angular. We are thinking each part of our application as a very focused and isolated component, instead of thinking our application as a piece of HTML and adding behavior to it. It is more JavaScript first, than HTML first. Our render methods are returning a UI tree description which happens to be HTML. If we used React JS it would use this render method several times to figure out if the returned tree had changed. When changes are detected a specific operation to sync that change with the actual UI layer would be triggered. This is not possible with Angular of course, but now you start to see why React JS is so extremely fast.
@@ -371,6 +381,7 @@ angular.module('TodoMVC', ['experiment'])
 And now let us update components using the actions:
 
 {% highlight javascript %}
+{% raw %}
 angular.module('TodoMVC', ['experiment'])
   .component('todoMvc', function () { ... })
   .component('todoCreator', function (todoActions) { 
@@ -413,6 +424,7 @@ angular.module('TodoMVC', ['experiment'])
   })
   .store('todos', function () { ... })
   .actions('todosActions', function () { ... });
+{% endraw %}
 {% endhighlight %}
 
 So there we have it. Our application using components and an immutable state tree.
