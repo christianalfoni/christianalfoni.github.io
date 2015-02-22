@@ -166,7 +166,12 @@ angular.module('app', ['experiment'])
     return {
       render: function () {
         return `
-          <h1>Hello world <span ng-if="props.showMessage" ng-click="logMessage(props.message)">- {{props.message}}</span></h1>
+          <h1>
+            Hello world 
+            <span ng-if="props.showMessage" ng-click="logMessage(props.message)">
+              - {{props.message}}
+            </span>
+         </h1>
         `;
       }
     };
