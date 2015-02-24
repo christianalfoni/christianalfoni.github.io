@@ -59,7 +59,7 @@ Just like **grunt** and **gulp** you will need a file defining your setup. This 
 {% highlight javascript %}
 module.exports = {
   entry: ['./app/main.js'],
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   }
@@ -124,7 +124,7 @@ You will have to install the loaders we need for the workflow, and the first one
 {% highlight javascript %}
 module.exports = {
   entry: ['./app/main.js'],
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -180,7 +180,7 @@ module.exports = {
       'react': bower_dir + '/react/react.min.js'
     }
   },
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -210,7 +210,7 @@ var config = {
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -239,7 +239,7 @@ var config = {
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -297,7 +297,7 @@ var config = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
   ],
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -542,7 +542,7 @@ module.exports = {
     entry: {
     app: ['./app/main.js']
   },
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -588,7 +588,7 @@ module.exports = {
   entry: {
     app: ['./app/main.js']
   },
-  ouput: {
+  output: {
     path: './build',
     filename: 'bundle.js'
   },
@@ -650,7 +650,7 @@ var config = {
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
-  ouput: {
+  output: {
   
     // If in production mode we put the files into the dist folder instead
     path: process.env.NODE_ENV === 'production' ? './dist' : './build',
