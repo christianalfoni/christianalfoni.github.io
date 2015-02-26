@@ -206,7 +206,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
   addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp(path);
+    this.module.noParse.push(new RegExp(path));
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
@@ -235,7 +235,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
   addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp(path);
+    this.module.noParse.push(new RegExp(path));
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
@@ -280,7 +280,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
    addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp('^' + name + '$');
+    this.module.noParse.push(new RegExp('^' + name + '$'));
   },
   
   // We split the entry into two specific chunks. Our app and vendors. Vendors
@@ -646,7 +646,7 @@ var bower_dir = __dirname + '/bower_components';
 var config = {
   addVendor: function (name, path) {
     this.resolve.alias[name] = path;
-    this.module.noParse.push(new RegExp('^' + name + '$');
+    this.module.noParse.push(new RegExp('^' + name + '$'));
   },
   entry: ['./app/main.js'],
   resolve: { alias: {} },
