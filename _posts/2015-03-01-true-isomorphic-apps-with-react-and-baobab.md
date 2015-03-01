@@ -3,7 +3,7 @@ layout: post
 title:  "True isomorphic apps with React and Baobab"
 date:   2015-03-01 09:21:30
 categories: javascript
-tags: ["isomorphism", "react", "baobab"," "flux"]
+tags: ["isomorphism", "react", "baobab", "flux"]
 ---
 So this little library Baobab continues to surprise me. The [previous article](http://christianalfoni.github.io/javascript/2015/02/06/plant-a-baobab-tree-in-your-flux-application.html) I wrote on this used a strategy where you would lock up all your components, but have a dependency to the state tree of the application. There the component could load up cursors that would notify the component when changed, allowing it to extract state from the state tree. This optimized the rendering of React JS and gave a very good FLUX structure to your application.
 
@@ -505,6 +505,6 @@ In my opinion this is exactly how I want to build my apps. I want to inject stat
 
 I have used this technique on a project I am working on called [EmptyBox](https://github.com/christianalfoni/EmptyBox). It is a hackable blog service using React JS. It also has some other cool features you can not achieve without React JS.
 
-To see a more simple example using this technique you can check out [this repo]().
+To see a more simple example using this technique you can check out [this repo](https://github.com/christianalfoni/isomorphic-react-baobab-example).
 
 The mixin is currently a pull request to the Baobab project. Hopefully it will be pulled and documented there. No matter, feel free to use the one in the example! Thanks for reading!
