@@ -3,7 +3,7 @@ layout: post
 title:  "True isomorphic apps with React and Baobab"
 date:   2015-03-01 09:21:30
 categories: javascript
-tags: ["isomorphism", "react", "baobab", "flux"]
+tags: ["isomorphism", "react", "baobab",git a "flux"]
 ---
 So this little library Baobab continues to surprise me. The [previous article](http://christianalfoni.github.io/javascript/2015/02/06/plant-a-baobab-tree-in-your-flux-application.html) I wrote on this used a strategy where you would lock up all your components, but have a dependency to the state tree of the application. There the component could load up cursors that would notify the component when changed, allowing it to extract state from the state tree. This optimized the rendering of React JS and gave a very good FLUX structure to your application.
 
@@ -160,7 +160,7 @@ module.exports = WrapperComponent;
 The wrapper component will expose either the Baobab state tree itself or just a plain object, depending on it being the client or the server.
 
 #### A mixin to extract state
-As we know from the [existing mixins](https://github.com/Yomguithereal/baobab#react-mixins) for Baobab it is possible to extract state by using a cursors object defined on the component itself. Since we are using the Baobab state tree a bit differently here, we have to create a new mixin. I actually created a [pull request]() for this as I think it should be part of the Baobab package. Allowing for an isomorphic approach. First lets see how we use the mixin on a component:
+As we know from the [existing mixins](https://github.com/Yomguithereal/baobab#react-mixins) for Baobab it is possible to extract state by using a cursors object defined on the component itself. Since we are using the Baobab state tree a bit differently here, we have to create a new mixin. I actually created a [pull request](https://github.com/Yomguithereal/baobab/pull/107) for this as I think it should be part of the Baobab package. Allowing for an isomorphic approach. First lets see how we use the mixin on a component:
 
 *SomeComponent.js (client and server)*
 {% highlight javascript %}
