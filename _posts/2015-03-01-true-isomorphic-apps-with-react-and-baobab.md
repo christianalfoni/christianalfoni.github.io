@@ -5,14 +5,14 @@ date:   2015-03-01 09:21:30
 categories: javascript
 tags: ["isomorphism", "react", "baobab",git a "flux"]
 ---
-So this little library Baobab continues to surprise me. The [previous article](http://christianalfoni.github.io/javascript/2015/02/06/plant-a-baobab-tree-in-your-flux-application.html) I wrote on this used a strategy where you would lock up all your components, but have a dependency to the state tree of the application. There the component could load up cursors that would notify the component when changed, allowing it to extract state from the state tree. This optimized the rendering of React JS and gave a very good FLUX structure to your application.
+So this little library Baobab continues to surprise me. The [previous article](http://christianalfoni.github.io/javascript/2015/02/06/plant-a-baobab-tree-in-your-flux-application.html) I wrote on this used a strategy where you would lock up all your components, but have a dependency to the state tree of the application. There the component could load up cursors that would notify the component when changed, allowing it to extract state from the state tree and render itself again. This optimized the rendering of React JS and gave a very good FLUX structure to your application.
 
-When going isomorphic though... wait, let me explain what an isomorphic app is before we move on. Typically with a single page application you pass only som basic HTML and scripts on the initial page request. When the page and scripts load, your application starts. You probably have a loader indicating the scripts loading, or if not, just a white screen. This might not seem like such a big problem, but it is. Visitors to your page or application really does not like waiting, not even for a few hundred milliseconds. The google bot collecting page information around the web does not like this either. It requires a complete HTML page to be served when hitting your URL.
+When going isomorphic though... wait, let me explain what an isomorphic app is before we move on. Typically with a single page application you pass only som basic HTML and scripts on the initial page request. When the page and scripts load, your application starts. You probably have a loader indicating the scripts loading, or if not, just a white screen. This might not seem like such a big problem, but it is. Visitors to your page or application really does not like waiting, not even for a few hundred milliseconds. The google bot collecting page information does not like this either. It requires a complete HTML page to be served when hitting your URL.
 
 So, when going isomorphic, you will actually render your application on the server and deliver it along with your base HTML and scripts. That way the user will instantly see content. React JS is especially elegant in handling this because it will piggy back the existing HTML. What I mean is that when React JS has loaded and you render your application again it will notice that the existing HTML on the page is rendered by React on the server. So instead of doing a normal render, it will just register event listeners etc.
 
 ### Why change Baobab strategy?
-When loading the application component on the server it will load all the dependencies to the component also. If this dependency is a single state tree the registered listeners to that state tree you will get into problems. You do not want to do this on the server, as you will have multiple users and maybe those users sees your application in different states. What we want is to build some initial state based on the request to the server and inject that state into our application. The best course of action here is to inject that state at the very top component, since that is where both the client and the server loads up the application.
+When loading the application component on the server it will load all the dependencies to the component also. If this dependency is a your state tree that the component registers listeners to, you will get into problems. You do not want to do this on the server, as you would get a huge memory leak and you will have multiple users and maybe those users sees your application in different states. What we want is to build some initial state based on the request to the server and inject that state into our application. The best course of action here is to inject that state at the very top component, since that is where both the client and the server loads up the application.
 
 ### The current injecting possibilities with React
 There are two strategies to injecting state into your application. The first one is using props and the other is using context.
@@ -248,10 +248,9 @@ var ContextMixin = {
         };
         cursor.on('update', callback);
 
-      // If we are on the server we use the same cursor path defined,
-      // but instead of using the Baobab API, as on the server this is just
-      // a plain object. We use the path to drill into the state object and
-      // set the state
+      // If we are on the server we use the same cursor path defined.
+      // But instead of using the Baobab API, we use the path to drill 
+      // into the state object and set the state
       } else {
 
         var path = this.cursors[cursorKey];
@@ -284,6 +283,7 @@ Now let us take a look at the complete flow from server to client. We are going 
 
 *index.html*
 {% highlight html %}
+{% raw %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -297,6 +297,7 @@ Now let us take a look at the complete flow from server to client. We are going 
     <script src="app.js"></script>
   </body>
 </html>
+{% endraw %}
 {% endhighlight %}
 
 We create a placeholder for where we want to put the HTML of our app. We also put the state we created on the global window object. This allows our client store to grab that state and that way being in sync. We will see this soon.
