@@ -305,6 +305,7 @@ We create a placeholder for where we want to put the HTML of our app. We also pu
 
 *server.js*
 {% highlight javascript %}
+{% raw %}
 // We make jsx syntax available to node
 require('node-jsx').install({extension: '.jsx'})
 
@@ -332,9 +333,9 @@ app.get('/', function (req, res) {
       // We render the application to an HTML string, passing in the store
       var app = React.renderToString(AppWrapper({store: store}));
       
-      // We replace our placeholders with both the app html itself and the state of the store. You
-      // might prefer loading the store state with ajax after initial page load in case it is quite
-      // large. It is a balance you have to decide upon
+      // We replace our placeholders with both the app html itself and the state of the store. 
+      // You might prefer loading the store state with ajax after initial page load in case 
+      // it is quite large. It is a balance you have to decide
       var html = index.replace('{{APP}}', app).replace('{{STORE}}', JSON.stringify(store));
       
       res.type('html');
@@ -343,6 +344,7 @@ app.get('/', function (req, res) {
 
 });
 app.listen(3000);
+{% endraw %}
 {% endhighlight %}
 
 So when our client now goes to `localhost:3000` the HTML responded will have the HTML of our app and a store object containing the state it was based upon. The browser will also load up `app.js`. This is a bundled file using either browserify or webpack, so let us look at the main entry file:
