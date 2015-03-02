@@ -130,7 +130,8 @@ var store = {
   items: []
 };
 
-React.render(<WrapperComponent store={store})/>, document.render);
+// We will see later what we will do with this html
+var html = React.renderToString(<WrapperComponent store={store})/>);
 {% endhighlight %}
 
 #### How the wrapper exposes the context
