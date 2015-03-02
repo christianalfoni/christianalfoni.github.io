@@ -96,7 +96,7 @@ In the [Q&A at react-conf 2015](https://www.youtube.com/watch?v=EPpkboSKvPI&inde
 
 2. A parent component might not be using the context, but the child does. If the parent uses PureRenderMixin it will not render the child when the context updates
 
-A third challenge to mention here, which exists both using **props** and **context**, is that we loose the possbility to just render components that actually needs to updated. The store is injected from the top on every change.
+A third challenge to mention here, which exists both using **props** and **context**, is that we loose the possbility to just render components that actually needs to update. The store is injected from the top on every change.
 
 ### So can we get the best of both worlds?
 I will go through this section showing how this works on the client and server in parallell. Lets get going.
