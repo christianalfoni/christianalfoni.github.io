@@ -425,11 +425,11 @@ module.exports = {
     path: './build',
     filename: 'bundle.js'
   },
-  plugins: [new webpack.optimize.CommonChunkPlugin('main', null, false)]
+  plugins: [new webpack.optimize.CommonsChunkPlugin('main', null, false)]
 };
 {% endhighlight %}
 
-We create a **CommonChunkPlugin** and pass three arguments. The first argument refers to what entry point we want to put the shared code. The default entry point name is "main", which points to ['./app/main.js']. The second argument would be the name of the file, that holds the shared code, but since we already have an output for our main entry point (bundle.js) we leave it at null. The third argument tells webpack to look for common modules in our lazely required modules. There is actually a fourth argument here too which is a number. The number states how many of these lazy modules that needs to share a module before it is put into our main bundle.
+We create a **CommonsChunkPlugin** and pass three arguments. The first argument refers to what entry point we want to put the shared code. The default entry point name is "main", which points to ['./app/main.js']. The second argument would be the name of the file, that holds the shared code, but since we already have an output for our main entry point (bundle.js) we leave it at null. The third argument tells webpack to look for common modules in our lazely required modules. There is actually a fourth argument here too which is a number. The number states how many of these lazy modules that needs to share a module before it is put into our main bundle.
 
 An important note here is that the modules (main.js, Home.js or Admin.js) themselves does not have to require the common module, any dependency within a dependency will count. An example of this would be if *Home.js* required a module named *InnerHome.js* and *InnerHome.js* required our *Shared.js* module. The *Shared.js* module would still be included in main bundle.
 
@@ -451,7 +451,7 @@ module.exports = {
     path: './build',
     filename: 'bundle.js'
   },
-  plugins: [new webpack.optimize.CommonChunkPlugin('common.js', 2)]
+  plugins: [new webpack.optimize.CommonsChunkPlugin('common.js', 2)]
 };
 {% endhighlight %}
 
