@@ -12,7 +12,7 @@ When going isomorphic though... wait, let me explain what an isomorphic app is b
 So, when going isomorphic, you will actually render your application on the server and deliver it along with your base HTML and script tags. That way the user will instantly see content. React JS is especially elegant in handling this because it will piggy back the existing HTML. What I mean is that when React JS has loaded and you render your application again on the client it will notice that the existing HTML on the page is rendered by React on the server. So instead of doing a normal render, it will just register event listeners etc.
 
 ### Why change Baobab strategy?
-When loading the application component on the server it will load all the dependencies of each component also. If this dependency is a state tree the component registers listeners to, you will get into problems. You do not want to do this on the server, as you would get a huge memory leak and you will have multiple users wanting to load your application with different states, a single tree will not cut it. What we want is to build some initial state based on the request to the server and inject that state into our application. The best course of action here is to inject that state at the very top component, since all other components are part of it.
+When loading the application components on the server it will load all the dependencies of each component also. If you are depending on business logic, like some module that changes the state of the tree, that module will probably have its dependencies too. What you end up with is loading your whole client side application on the server, when you only wanted to load the components. This could get you into trouble. There is also a matter of trying to find a way to isolate components to a level where they really are just components.
 
 ### The current injecting possibilities with React
 There are two strategies to injecting state into your application. The first one is using props and the other is using context.
@@ -161,7 +161,7 @@ module.exports = WrapperComponent;
 The wrapper component will expose either the Baobab state tree itself or just a plain object, depending on it being the client or the server.
 
 #### A mixin to extract state
-As we know from the [existing mixins](https://github.com/Yomguithereal/baobab#react-mixins) for Baobab it is possible to extract state by using a cursors object defined on the component itself. Since we are using the Baobab state tree a bit differently here, we have to create a new mixin. I actually created a [pull request](https://github.com/Yomguithereal/baobab/pull/107) for this as I think it should be part of the Baobab package. Allowing for an isomorphic approach. First lets see how we use the mixin on a component:
+As we know from the [existing mixins](https://github.com/Yomguithereal/baobab#react-mixins) for Baobab it is possible to extract state by using a cursors object defined on the component itself. Since we are using the Baobab state tree a bit differently here, we have to create a new mixin. I actually created a [pull request](https://github.com/Yomguithereal/baobab/pull/107) for this. It ended up in a discussion that brings up a different approach. It uses an application event hub to decouple business logic from the components. I encourage you to check it out! But now lets see how we use the mixin on a component
 
 *SomeComponent.js (client and server)*
 {% highlight javascript %}
@@ -280,7 +280,7 @@ module.exports = ContextMixin;
 {% endhighlight %}
 
 ### The complete flow
-Now let us take a look at the complete flow from server to client. We are going to use the jsx file extension as we want to use components on the server too. The benefit of using the jsx extension is that node will only parse jsx files, not normal js files. Let us first look at the index.html file that we want to load up:
+Now let us take a look at the complete flow from server to client. We are going to use the jsx file extension as we want to use components on the server too. The benefit of using the jsx extension is that node will only transpile jsx files, not normal js files. Let us first look at the index.html file that we want to load up:
 
 *index.html*
 {% highlight html %}
@@ -513,4 +513,4 @@ I have used this technique on a project I am working on called [EmptyBox](https:
 
 To see a more simple example using this technique you can check out [this repo](https://github.com/christianalfoni/isomorphic-react-baobab-example).
 
-The mixin is currently a pull request to the Baobab project. Hopefully it will be pulled and documented there. No matter, feel free to use the one in the example! Thanks for reading!
+Please feel free to use the mixin documented here or check out the alternative strategy explained in the [pull request](https://github.com/Yomguithereal/baobab/pull/107). Thanks for reading!
